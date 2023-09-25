@@ -1,9 +1,10 @@
 from __future__ import annotations
 from typing import List 
 import math
+import time
 
 SEARCH_MAP_SIZE = 32
-SEARCH_RAD = 4.5
+SEARCH_RAD = 3.5
 
 class MovementException(Exception): 
     def __init__(self): 
@@ -14,16 +15,19 @@ class SearchMap:
     def __init__(self, map: int=0):
         self._map = 0
 
+    @property
+    def str_map(self) -> str: 
+        str_map_val = str(bin(self._map))[2:]
+        return str_map_val.rjust(SEARCH_MAP_SIZE**2, "0")
+
     def reveal(self, point: Point) -> None: 
         self._map |= point.binary_grid_value
 
     def show(self) -> None:
-        str_map = str(bin(self._map))[2:]
-        str_map = str_map.rjust(SEARCH_MAP_SIZE**2, "0")
         for row in range(0, SEARCH_MAP_SIZE): 
             min = row * SEARCH_MAP_SIZE
             max = min + SEARCH_MAP_SIZE
-            print(str_map[min:max])
+            print(self.str_map[min:max])
 
 
 class Point: 
@@ -106,20 +110,16 @@ class Point:
         return search_map
     
 my_search_map = SearchMap()
-my_point = Point(10, 10)
-my_search_map = my_point.search(my_search_map)
-my_search_map.show()
 
-#           beginning -> 111110000
-# 00000000000000000000001111111000
-# 00000000000000000000011111111000
-# 00000000000000000000011111111000
-# 00000000000000000000011111111000
-# 00000000000000000000011111111000
-# 00000000000000000000011111111000
-# 00000000000000000000001111111000
-# 00000000000000000000000000000000
-# 00000000000000000000000000000000
-# 00000000000000000000000000000000 -> end
+for i in range(0, SEARCH_MAP_SIZE): 
+    my_point = Point(i, i)
+    my_search_map = my_point.search(my_search_map)
+    my_search_map.show()
+    time.sleep(0.25)
+
+
+# my_point = Point(1, 1)
+# my_search_map = my_point.search(my_search_map)
+# my_search_map.show()
 
 
