@@ -36,13 +36,13 @@ class Edge:
         self.point_b = point_b
 
     @property
-    def diagonal_distance(self): 
+    def diagonal_distance(self) -> int: 
         x_delta = self.point_a.x - self.point_b.x
         y_delta = self.point_a.y - self.point_b.y
         return max(abs(x_delta), abs(y_delta))
     
     @property
-    def length(self): 
+    def length(self) -> float: 
         return self.point_a.distance_to(self.point_b)
 
     def _interpolate(self, start: int, end: int, step: float) -> float: 
