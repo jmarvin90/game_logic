@@ -1,5 +1,5 @@
 from __future__ import annotations
-from typing import List 
+from typing import List, Optional
 import math
 import time
 
@@ -30,6 +30,42 @@ class SearchMap:
             print(self.str_map[min:max])
 
 
+class Edge: 
+    def __init__(self, point_a: Point, point_b: Point):
+        self.point_a = point_a
+        self.point_b = point_b
+
+    @property
+    def diagonal_distance(self): 
+        x_delta = self.point_a.x - self.point_b.x
+        y_delta = self.point_a.y - self.point_b.y
+        return max(abs(x_delta), abs(y_delta))
+    
+    @property
+    def length(self): 
+        return self.point_a.distance_to(self.point_b)
+
+    def _interpolate(self, start: int, end: int, step: float) -> float: 
+        difference = end - start
+        portion = difference * step
+        result = start + portion
+        return round(result)
+    
+    def points(self, steps: Optional[int]=None) -> List[Point]:
+        points = [self.point_a, self.point_b]
+        
+        if steps is None: 
+            steps = self.diagonal_distance
+
+        for step in range(1, steps + 1): 
+            t = step / steps
+            x = self._interpolate(self.point_a.x, self.point_b.x, t)
+            y = self._interpolate(self.point_a.y, self.point_b.y, t)
+            points.insert(-1, Point(x, y))
+
+        return points
+
+
 class Point: 
     def __init__(self, x: int, y: int):
         self._x = x
@@ -41,7 +77,7 @@ class Point:
     def inverse_coordinate(coordinate: int) -> int: 
         inversed = SEARCH_MAP_SIZE - coordinate
         return inversed - 1
-
+        
     @property
     def x(self) -> int: 
         return self._x  
@@ -108,18 +144,18 @@ class Point:
             search_map.reveal(point)
         
         return search_map
-    
-my_search_map = SearchMap()
-
-for i in range(0, SEARCH_MAP_SIZE): 
-    my_point = Point(i, i)
-    my_point.search(my_search_map)
-    my_search_map.show()
-    time.sleep(0.25)
 
 
-# my_point = Point(1, 1)
-# my_search_map = my_point.search(my_search_map)
-# my_search_map.show()
+if __name__ == "__main__":
+    my_search_map = SearchMap()
+
+    point_1 = Point(0, 0)
+    point_2 = Point(31, 31)
+
+    my_edge = Edge(point_1, point_2)
+    for point in my_edge.points():
+        point.search(my_search_map)
+        my_search_map.show()
+        time.sleep(0.5)
 
 
