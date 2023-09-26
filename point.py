@@ -13,7 +13,7 @@ class MovementException(Exception):
 
 class SearchMap: 
     def __init__(self, map: int=0):
-        self._map = 0
+        self._map = map
 
     @property
     def str_map(self) -> str: 
@@ -34,6 +34,8 @@ class Point:
     def __init__(self, x: int, y: int):
         self._x = x
         self._y = y
+        self._inverse_x = Point.inverse_coordinate(self._x)
+        self._inverse_y = Point.inverse_coordinate(self._y)
 
     @staticmethod
     def inverse_coordinate(coordinate: int) -> int: 
@@ -42,7 +44,7 @@ class Point:
 
     @property
     def x(self) -> int: 
-        return self._x
+        return self._x  
     
     @property
     def y(self) -> int: 
@@ -78,9 +80,7 @@ class Point:
     
     @property
     def binary_grid_index_position(self) -> int: 
-        inverse_x = Point.inverse_coordinate(self._x)
-        inverse_y = Point.inverse_coordinate(self._y)
-        return (SEARCH_MAP_SIZE * inverse_y) + inverse_x
+        return (SEARCH_MAP_SIZE * self._inverse_y) + self._inverse_x
     
     @property
     def binary_grid_value(self) -> int: 
@@ -89,7 +89,7 @@ class Point:
     def distance_to(self, point: Point) -> float: 
         x_delta = self._x - point._x
         y_delta = self._y - point._y
-        distance_to_point = math.sqrt(x_delta**2 + y_delta**2)
+        distance_to_point = math.hypot(x_delta, y_delta)
         return distance_to_point
     
     def get_points_in_search_radius(self) -> List[Point]:
@@ -113,7 +113,7 @@ my_search_map = SearchMap()
 
 for i in range(0, SEARCH_MAP_SIZE): 
     my_point = Point(i, i)
-    my_search_map = my_point.search(my_search_map)
+    my_point.search(my_search_map)
     my_search_map.show()
     time.sleep(0.25)
 
