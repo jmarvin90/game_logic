@@ -58,16 +58,50 @@ class Edge:
     def angle(self) -> float:
         """"""
         return math.atan2(self._x_diff, self._y_diff)
+
+    @property
+    def is_vertical(self) -> bool: 
+        return self.origin.x == self.termination.x
+    
+    @property
+    def is_horizontal(self) -> bool: 
+        return self.origin.y == self.termination.y
     
     @property
     def slope(self) -> float: 
         """"""
+        if self.is_vertical: 
+            return 1
+        
+        if self.is_horizontal: 
+            return 0
+        
+        print(self.origin, self.termination, self._y_diff / self._x_diff)
         return self._y_diff / self._x_diff
+    
+    @property
+    def c(self) -> float:
+        """"""
+        return self.origin.y - (self.slope * self.origin.x)
+    
+    @property
+    def c_2(self) -> float: 
+        """"""
+        top_left = self.origin.x * self.termination.y
+        top_right = self.termination.x * self.origin.y
+        top = top_left - top_right
+        bottom = self.origin.x - self.termination.x
+        return top / bottom
     
     def is_parallel_to(self, edge_2: Edge) -> bool: 
         """Check if the current edge is parallel to another."""
+        if self.is_horizontal and edge_2.is_horizontal: 
+            return True
+        
+        if self.is_vertical and edge_2.is_vertical: 
+            return True
+        
         return self.slope == edge_2.slope
-
 
     def _interpolate(self, start: int, end: int, step: float) -> float: 
         """Interpolate the next 'step' between a given start and end."""
@@ -90,7 +124,68 @@ class Edge:
             points.insert(-1, Point(x, y))
 
         return points
+    
+    def interception_point(self, edge2: Edge):
 
+        # self.origin.x(edge2.origin.x(self.termination.y−edge2.termination.y)+
+        # edge2.termination.x(edge2.origin.y−self.termination.y))
+        top_left = self.origin.x * (
+            (edge2.origin.x * (self.termination.y - edge2.termination.y)) + 
+            (edge2.termination.x * (edge2.origin.y - self.termination.y))
+        )
+
+        # self.termination.x(edge2.origin.x(edge2.termination.y−self.origin.y)+
+        # edge2.termination.x(self.origin.y−edge2.origin.y))
+        top_right = self.termination.x * (
+            (edge2.origin.x * (edge2.termination.y - self.origin.y)) + 
+            (edge2.termination.x * (self.origin.y - edge2.origin.y))
+        )
+
+        top = top_left + top_right
+
+        # (self.origin.x−self.termination.x)(edge2.origin.y−edge2.termination.y)
+        bottom_left = (
+            (self.origin.x - self.termination.x) * 
+            (edge2.origin.y - edge2.termination.y)
+        )
+
+        # (edge2.termination.x−edge2.origin.x)(self.origin.y−self.termination.y)
+        bottom_right = (
+            (edge2.termination.x - edge2.origin.x) * 
+            (self.origin.y - self.termination.y)
+        )
+
+        bottom = bottom_left + bottom_right
+
+        return top / bottom
+    
+    def x_spans(self, x: float) -> bool: 
+        """"""
+        return (
+            (self.origin.x <= x <= self.termination.x) or 
+            (self.origin.x >= x >= self.termination.x)
+        )
+    
+    def intercepts(self, edge2: Edge) -> bool: 
+        """"""
+        if self.is_parallel_to(edge2):
+            return False
+        
+        intercept_point = self.interception_point(edge2)
+
+        print(intercept_point)
+
+        for_eval = [
+            self.x_spans(intercept_point), 
+            edge2.x_spans(intercept_point), 
+            intercept_point <= SEARCH_MAP_SIZE
+        ]
+
+        print(for_eval)
+        
+        return all(for_eval)
+        
+        
 
 class Point: 
     def __init__(self, x: int, y: int):
@@ -174,26 +269,34 @@ class Point:
             search_map.reveal(point)
         
         return search_map
+    
+    @property
+    def is_in_bounds(self) -> bool: 
+        """Indicate whether the specified point is in bounds of the map."""
+        in_x = 0 <= self.x <= SEARCH_MAP_SIZE
+        in_y = 0 <= self.y <= SEARCH_MAP_SIZE
+        return in_x and in_y
+
 
 
 if __name__ == "__main__":
     my_search_map = SearchMap()
 
-    edge1p1 = Point(0, 3)
-    edge1p2 = Point(6, 3)
+    edge1p1 = Point(0, 5)
+    edge1p2 = Point(15, 6)
 
-    edge2p1 = Point(0, 6)
-    edge2p2 = Point(6, 7)
+    edge2p1 = Point(6, 0)
+    edge2p2 = Point(7, 10)
 
     edge1 = Edge(edge1p1, edge1p2)
     edge2 = Edge(edge2p1, edge2p2)
 
-    for point in [*edge1.intermediary_points(), *edge2.intermediary_points()]: 
+    for point in [*edge1.intermediary_points(), *edge2.intermediary_points()]:
         my_search_map.reveal(point)
 
     my_search_map.show()
 
-    print(edge1.is_parallel_to(edge2))
+    print(edge1.intercepts(edge2))
 
 
     
