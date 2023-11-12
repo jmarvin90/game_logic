@@ -3,7 +3,7 @@ from typing import List, Optional
 import math
 import time
 
-SEARCH_MAP_SIZE = 32
+SEARCH_MAP_SIZE = 16
 SEARCH_RAD = 3.5
 
 
@@ -58,6 +58,15 @@ class Edge:
     def angle(self) -> float:
         """"""
         return math.atan2(self._x_diff, self._y_diff)
+    
+    @property
+    def slope(self) -> float: 
+        """"""
+        return self._y_diff / self._x_diff
+    
+    def is_parallel_to(self, edge_2: Edge) -> bool: 
+        """Check if the current edge is parallel to another."""
+        return self.slope == edge_2.slope
 
 
     def _interpolate(self, start: int, end: int, step: float) -> float: 
@@ -170,19 +179,26 @@ class Point:
 if __name__ == "__main__":
     my_search_map = SearchMap()
 
-    origin = Point(5, 5)
-    for x in range(origin.search_min_x, origin.search_max_x): 
-        for y in range(origin.search_min_y, origin.search_max_y):
-            edge = Edge(origin, Point(x, y))
-            for point in edge.intermediary_points(): 
-                my_search_map.reveal(point)
-            my_search_map.show()
-            print(edge.angle * (180/math.pi))
-            my_search_map._map = 0
-            time.sleep(1)
-            
+    edge1p1 = Point(0, 3)
+    edge1p2 = Point(6, 3)
+
+    edge2p1 = Point(0, 6)
+    edge2p2 = Point(6, 7)
+
+    edge1 = Edge(edge1p1, edge1p2)
+    edge2 = Edge(edge2p1, edge2p2)
+
+    for point in [*edge1.intermediary_points(), *edge2.intermediary_points()]: 
+        my_search_map.reveal(point)
+
+    my_search_map.show()
+
+    print(edge1.is_parallel_to(edge2))
 
 
+    
+
+    
     # my_edge = Edge(point_1, point_2)
     # for point in my_edge.intermediary_points():
     #     point.search(my_search_map)
