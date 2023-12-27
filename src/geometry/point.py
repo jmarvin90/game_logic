@@ -29,7 +29,7 @@ class Point:
 
     @staticmethod
     def inverse_coordinate(coordinate: int) -> int: 
-        """Inverse a coordinate value according to a bottom-right-oriented grid."""
+        """Inverse a coordinate value as per a bottom-right-oriented grid."""
         inversed = SEARCH_MAP_SIZE - coordinate
         return inversed - 1
         
