@@ -2,8 +2,7 @@ from __future__ import annotations
 from typing import List
 import math
 
-import geometry.constants
-import geometry.edge
+from geometry.constants import SEARCH_MAP_SIZE, SEARCH_RAD
 
 class Point: 
     def __init__(self, x: int, y: int):
@@ -31,33 +30,8 @@ class Point:
     @staticmethod
     def inverse_coordinate(coordinate: int) -> int: 
         """Inverse a coordinate value according to a bottom-right-oriented grid."""
-        inversed = constants.SEARCH_MAP_SIZE - coordinate
+        inversed = SEARCH_MAP_SIZE - coordinate
         return inversed - 1
-    
-    @staticmethod
-    def orientation(point_a: Point, point_b: Point, point_c: Point) -> int:
-        """Return the orientation of three points.
-        
-        -1 denotes counterclock; 0 denotes vertical, and +1 denotes clock.
-
-        #TODO -     check if there is some better way to calculate val using
-                    magic methods
-        """
-        edge_1 = geometry.edge.Edge(point_b, point_a)
-        edge_2 = geometry.edge.Edge(point_c, point_b)
-
-        val = (
-            (edge_1._y_diff * edge_2._x_diff) - 
-            (edge_1._x_diff * edge_2._y_diff)
-        )
-
-        if val > 1: 
-            return 1
-        
-        if val < 0: 
-            return -1
-        
-        return 0
         
     @property
     def x(self) -> int: 
@@ -80,31 +54,31 @@ class Point:
     @property
     def search_min_x(self) -> int: 
         """Return the left-most X coordinate for the point's bounding box."""
-        min_x = max(0, math.floor(self._x - constants.SEARCH_RAD))
+        min_x = max(0, math.floor(self._x - SEARCH_RAD))
         return min_x
     
     @property
     def search_max_x(self) -> int:
         """Return the right-most X coordinate for the point's bounding box."""
-        max_x = min(constants.SEARCH_MAP_SIZE, math.ceil(self._x + constants.SEARCH_RAD))
+        max_x = min(SEARCH_MAP_SIZE, math.ceil(self._x + SEARCH_RAD))
         return max_x
     
     @property
     def search_min_y(self) -> int:
         """Return the bottom-most Y coordinate for the point's bounding box."""
-        min_y = max(0, math.floor(self._y - constants.SEARCH_RAD))
+        min_y = max(0, math.floor(self._y - SEARCH_RAD))
         return min_y
     
     @property
     def search_max_y(self) -> int: 
         """Return the top-most Y coordinate for the point's bounding box."""
-        max_y = min(constants.SEARCH_MAP_SIZE, math.ceil(self._y + constants.SEARCH_RAD))
+        max_y = min(SEARCH_MAP_SIZE, math.ceil(self._y + SEARCH_RAD))
         return max_y
     
     @property
     def binary_grid_index_position(self) -> int: 
         """Return the grid index position for the point."""
-        return (constants.SEARCH_MAP_SIZE * self._inverse_y) + self._inverse_x
+        return (SEARCH_MAP_SIZE * self._inverse_y) + self._inverse_x
     
     @property
     def binary_grid_value(self) -> int: 
@@ -125,7 +99,7 @@ class Point:
         for x_value in range(self.search_min_x, self.search_max_x): 
             for y_value in range(self.search_min_y, self.search_max_y):
                 point = Point(x_value, y_value)
-                if self.distance_to(point) <= constants.SEARCH_RAD: 
+                if self.distance_to(point) <= SEARCH_RAD: 
                     points_in_search_radius.append(point)
 
         return points_in_search_radius
@@ -133,6 +107,6 @@ class Point:
     @property
     def is_in_bounds(self) -> bool: 
         """Indicate whether the specified point is in bounds of the map."""
-        in_x = 0 <= self._x <= constants.SEARCH_MAP_SIZE
-        in_y = 0 <= self._y <= constants.SEARCH_MAP_SIZE
+        in_x = 0 <= self._x <= SEARCH_MAP_SIZE
+        in_y = 0 <= self._y <= SEARCH_MAP_SIZE
         return in_x and in_y

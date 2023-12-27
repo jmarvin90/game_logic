@@ -90,6 +90,21 @@ class TestEdge:
         # TODO - write this test
         assert True
 
+    def test_orientation(self):
+        """Check clockwise, counter-clock, vertical."""
+        point_a = Point(5, 5)
+        point_b = Point(5, 10)
+
+        point_l = Point(1, 10)
+        point_r = Point(10, 10)
+        point_t = Point(5, 15)
+
+        assert (
+            Edge.orientation(point_a, point_b, point_l) == -1 and
+            Edge.orientation(point_a, point_b, point_r) == 1 and
+            Edge.orientation(point_a, point_b, point_t) == 0
+        )
+
     def test_intersects(self):
         """"""
         point_a = Point(1, 1)

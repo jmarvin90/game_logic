@@ -2,7 +2,7 @@ from __future__ import annotations
 from typing import Optional, List
 import math
 
-import geometry.point
+from geometry.point import Point
 
 
 class Edge: 
@@ -57,14 +57,39 @@ class Edge:
         
         print(self.origin, self.termination, self._y_diff / self._x_diff)
         return self._y_diff / self._x_diff
+
+    @staticmethod
+    def orientation(point_a: Point, point_b: Point, point_c: Point) -> int:
+        """Return the orientation of three points.
+        
+        -1 denotes counterclock; 0 denotes vertical, and +1 denotes clock.
+        """
+
+        # TODO: check if there is some better way to calculate val using magic methods
+
+        edge_1 = Edge(point_b, point_a)
+        edge_2 = Edge(point_c, point_b)
+
+        val = (
+            (edge_1._y_diff * edge_2._x_diff) - 
+            (edge_1._x_diff * edge_2._y_diff)
+        )
+
+        if val > 1: 
+            return 1
+        
+        if val < 0: 
+            return -1
+        
+        return 0
     
     def intersects(self, edge: Edge) -> bool:
         """Check if the current edge intersects another."""
         # TODO - streamline
-        acd = geometry.point.Point.orientation(self.origin, edge.origin, edge.termination)
-        bcd = geometry.point.Point.orientation(self.termination, edge.origin, edge.termination)
-        abc = geometry.point.Point.orientation(self.origin, self.termination, edge.origin)
-        abd = geometry.point.Point.orientation(self.origin, self.termination, edge.termination)
+        acd = Edge.orientation(self.origin, edge.origin, edge.termination)
+        bcd = Edge.orientation(self.termination, edge.origin, edge.termination)
+        abc = Edge.orientation(self.origin, self.termination, edge.origin)
+        abd = Edge.orientation(self.origin, self.termination, edge.termination)
 
         return acd != bcd and abc != abd
     
