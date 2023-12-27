@@ -10,6 +10,9 @@ class Point:
         self._x = x
         self._y = y
 
+    def __str__(self):
+        return f"{self.x}, {self.y}"
+
     def __eq__(self, point: Point) -> bool:
         return self.x == point.x and self.y == point.y
 

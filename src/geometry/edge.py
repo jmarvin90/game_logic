@@ -10,6 +10,9 @@ class Edge:
         self.origin = origin
         self.termination = termination
 
+    def __str__(self):
+        return f"{self.origin.__str__()} -> {self.termination.__str__()}"
+
     @property
     def _x_diff(self) -> float:
         return self.origin.x - self.termination.x
