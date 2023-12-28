@@ -11,9 +11,18 @@ class Edge:
         self.termination = termination
 
     def __eq__(self, edge_2: Edge):
+        # TODO: what if the origins/terminations are reversed?
         return (
             self.origin == edge_2.origin and 
             self.termination == edge_2.termination
+        )
+
+    def __contains__(self, point: Point) -> bool:
+        return (
+            self.origin == point or
+            self.termination == point 
+            # TODO: implement 'point is on line' check
+            # or point is on line
         )
 
     def __str__(self):
@@ -61,7 +70,6 @@ class Edge:
         if self.is_horizontal: 
             return 0
         
-        print(self.origin, self.termination, self._y_diff / self._x_diff)
         return self._y_diff / self._x_diff
 
     @staticmethod

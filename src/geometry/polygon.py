@@ -10,20 +10,33 @@ class Polygon:
     @staticmethod
     def edges_from_points(*points: Tuple[geometry.point.Point]) -> tuple:
         """Return a sequence of edges from ordered points tuple."""
-        upper = len(points)
-        anchor = 0
-
+        anchor = -1
         output = []
 
-        for number in range(len(points) -1):
-            up_next = geometry.edge.Edge(points[anchor], points[number+1])
-            after_that = geometry.edge.Edge(points[number+1], points[number+2])
-
-            if not up_to_now.is_parallel_to(up_next):
+        # TODO: this doesn't currently work.
+        # The idea is that it should return the minimum number of points
+        # needed to represent the polygon.
+        for number in range(0, len(points)):
+            short = geometry.edge.Edge(points[anchor], points[number])
+            long = geometry.edge.Edge(points[anchor], points[number + 1])
+            if not long.is_parallel_to(short):
+                print(short)
+                output.append(short)
                 anchor = number
-                output.append(up_to_now)
 
-        return tuple(output)
+        return output
+
+        """ 
+
+        0         1         2
+        x ------- x ------- x 
+        |                   |
+        |                   |
+        |                   |
+        x-------------------x
+        4, -1               3
+
+        """
 
 
 

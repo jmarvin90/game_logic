@@ -22,6 +22,7 @@ class Point:
         return Point(self._x - point.x, self._y - point.y)
     
     def cross(self, point: Point) -> float:
+        # TODO: revise or remove this (not currently used)
         return (self._x * point.y) - (self._y * point.x)
     
     def scaled(self, scale_factor: float):
