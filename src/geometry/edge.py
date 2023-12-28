@@ -10,6 +10,12 @@ class Edge:
         self.origin = origin
         self.termination = termination
 
+    def __eq__(self, edge_2: Edge):
+        return (
+            self.origin == edge_2.origin and 
+            self.termination == edge_2.termination
+        )
+
     def __str__(self):
         return f"{self.origin.__str__()} -> {self.termination.__str__()}"
 
@@ -66,6 +72,7 @@ class Edge:
         """
 
         # TODO: check if there is some better way to calculate val using magic methods
+        # TODO: also check if this interface can be improved (e.g. can it accept an edge+point)
 
         edge_1 = Edge(point_b, point_a)
         edge_2 = Edge(point_c, point_b)
@@ -102,6 +109,11 @@ class Edge:
             return True
         
         return self.gradient == edge_2.gradient
+
+    def is_collinear_with(self, edge_2: Edge) -> bool:
+        """"""
+        # TODO: determine if this is needed and implement if so
+        pass
 
     def _interpolate(self, start: int, end: int, step: float) -> float: 
         """Interpolate the next 'step' between a given start and end."""
