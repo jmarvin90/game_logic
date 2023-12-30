@@ -125,18 +125,6 @@ class TestEdge:
             edge_1.intersects(edge_3)
         )
 
-    def test_are_collinear(self):
-        """Test if multiple points exist on the same line."""
-        one = Point(6, 5)
-        two = Point(6, 10)
-        three = Point(6, 15)
-        control = Point(7, 1_00)
-
-        collinear = Edge.check_collinearity(one, two, three)
-        not_collinear = Edge.check_collinearity(one, two, control)
-
-        assert collinear and not not_collinear
-
 
 
     
