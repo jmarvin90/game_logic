@@ -27,11 +27,6 @@ class TestPoint:
         point_c = Point(7, 7)
         assert point_a == point_b and point_a != point_c
 
-    def test_cross(self):
-        """Cross product."""
-        # TODO - write this test
-        assert True
-
     def test_scaled(self):
         """Scaled."""
         # TODO - write this test
