@@ -118,11 +118,6 @@ class Edge:
         
         return self.gradient == edge_2.gradient
 
-    def is_collinear_with(self, edge_2: Edge) -> bool:
-        """"""
-        # TODO: determine if this is needed and implement if so
-        pass
-
     def _interpolate(self, start: int, end: int, step: float) -> float: 
         """Interpolate the next 'step' between a given start and end."""
         difference = end - start

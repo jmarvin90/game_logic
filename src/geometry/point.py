@@ -1,5 +1,6 @@
 from __future__ import annotations
-from typing import List
+from typing import List, Tuple
+import itertools
 import math
 
 from geometry.constants import SEARCH_MAP_SIZE, SEARCH_RAD
@@ -20,6 +21,11 @@ class Point:
 
     def __sub__(self, point: Point) -> Point:
         return Point(self.x - point.x, self.y - point.y)
+
+    def __mul__(self, point: Point) -> Point:
+        """"""
+        # TODO: docstring & check if multiplication is appropriate
+        return Point(self.x * point.y, self.y * point.x)
 
     def dot_product(self, point: Point) -> float:
         """Return dot product of two points."""
@@ -111,3 +117,4 @@ class Point:
         in_x = 0 <= self.x <= SEARCH_MAP_SIZE
         in_y = 0 <= self.y <= SEARCH_MAP_SIZE
         return in_x and in_y
+
