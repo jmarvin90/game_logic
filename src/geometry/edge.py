@@ -1,6 +1,7 @@
 from __future__ import annotations
 from typing import Optional, List, Tuple
 import math
+import operator
 
 from geometry.point import Point
 
@@ -11,18 +12,15 @@ class Edge:
         self.termination = termination
 
     def __eq__(self, edge_2: Edge):
-        # TODO: what if the origins/terminations are reversed?
-        return (
-            self.origin == edge_2.origin and 
-            self.termination == edge_2.termination
-        )
+        """Check if two edges are the same."""
+        return self.origin in edge_2 and self.termination in edge_2
 
     def __contains__(self, point: Point) -> bool:
+        """Check if a given point occurs within the edge."""
         return (
             self.origin == point or
             self.termination == point 
             # TODO: implement 'point is on line' check
-            # or point is on line
         )
 
     def __str__(self):

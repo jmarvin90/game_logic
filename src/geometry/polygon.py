@@ -10,13 +10,14 @@ class Polygon:
     @staticmethod
     def edges_from_points(*points: Tuple[Point]) -> tuple:
         """Return a sequence of edges from ordered points tuple."""
-        anchor = -1
+        anchor = 0
         output = []
 
         # TODO: the algorithm here
         
         for item in output:
             print(item)
+
         return output
 
         """ 

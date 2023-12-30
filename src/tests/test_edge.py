@@ -80,6 +80,32 @@ class TestEdge:
             edge_a.is_parallel_to(skewed_edge)
         )
 
+    def test_contains(self):
+        point_a = Point(1, 1)
+        point_b = Point(3, 3)
+        edge = Edge(point_a, point_b)
+        control = Point(5, 5)
+
+        assert (
+            point_a in edge and 
+            point_b in edge and 
+            not control in edge
+        )
+
+    def test_equals(self):
+        point_a = Point(1, 1)
+        point_b = Point(3, 3)
+        point_c = Point(5, 5)
+
+        edge_1 = Edge(point_a, point_b)
+        edge_2 = Edge(point_b, point_a)
+        control = Edge(point_a, point_c)
+
+        assert (
+            edge_1 == edge_2 and
+            not edge_1 == control
+        )
+
     def test_interpolate(self):
         """"""
         # TODO - write this test
