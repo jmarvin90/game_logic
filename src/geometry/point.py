@@ -1,6 +1,5 @@
 from __future__ import annotations
-from typing import List, Tuple
-import itertools
+from typing import List
 import math
 
 from geometry.constants import SEARCH_MAP_SIZE, SEARCH_RAD
@@ -117,4 +116,3 @@ class Point:
         in_x = 0 <= self.x <= SEARCH_MAP_SIZE
         in_y = 0 <= self.y <= SEARCH_MAP_SIZE
         return in_x and in_y
-

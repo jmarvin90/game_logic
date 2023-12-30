@@ -62,5 +62,3 @@ class TestPoint:
         """Test if point is in bounds."""
         # TODO - write this test
         assert True
-
-

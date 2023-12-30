@@ -1,5 +1,5 @@
 from __future__ import annotations
-from typing import Optional, List
+from typing import Optional, List, Tuple
 import math
 
 from geometry.point import Point
@@ -139,4 +139,19 @@ class Edge:
             points.insert(-1, Point(x, y))
 
         return points
+
+    @staticmethod
+    def check_collinearity(*points: Tuple[Point]) -> bool:
+        """Check if multiple points exist on the same line.
+        
+        The gradient between the first and second point should equal the
+        gradient between the first point and any other point in the sequence.
+        """
+
+        initial_gradient = Edge(points[0], points[1]).gradient
+        for i in range(1, len(points)):
+            if Edge(points[0], points[i]).gradient != initial_gradient:
+                return False
+
+        return True
         

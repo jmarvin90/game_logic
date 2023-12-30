@@ -15,7 +15,6 @@ class Polygon:
         output = []
         return output
 
-
         """ 
 
         0         1         2
