@@ -13,16 +13,23 @@ class Polygon:
         anchor = -1
         output = []
 
-        for number in range(len(points)):
-            short = Edge(points[anchor], points[number])
-            long = Edge(points[anchor], points[(number+1)%len(points)])
-            if not long.is_parallel_to(short):
-                output.append(short)
-                anchor = number
+        # TODO: the algorithm here
         
         for item in output:
             print(item)
         return output
+
+        """ 
+
+        0         1         2         3
+        x ------- x ------- x ------- x
+        |                             |
+        |                             |
+        |                             |
+        x ----------------- x ------- x
+        6, -1               5         4
+
+        """
 
 
 
