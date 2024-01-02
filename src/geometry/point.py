@@ -31,6 +31,7 @@ class Point:
 
     def __lt__(self, point: Point) -> bool:
         """Check if a point is closer to origin."""
+        # TODO: as above
         return self.distance_to(Point(0, 0)) < point.distance_to(Point(0, 0))
 
     def __mul__(self, point: Point) -> Point:
@@ -62,11 +63,11 @@ class Point:
         return self._y
     
     @property
-    def _inverse_x(self) -> int:
+    def inverse_x(self) -> int:
         return Point.inverse_coordinate(self.x)
     
     @property
-    def _inverse_y(self) -> int: 
+    def inverse_y(self) -> int: 
         return Point.inverse_coordinate(self.y)
 
     @property
@@ -96,7 +97,7 @@ class Point:
     @property
     def binary_grid_index_position(self) -> int: 
         """Return the grid index position for the point."""
-        return (SEARCH_MAP_SIZE * self._inverse_y) + self._inverse_x
+        return (SEARCH_MAP_SIZE * self.inverse_y) + self.inverse_x
     
     @property
     def binary_grid_value(self) -> int: 

@@ -89,7 +89,7 @@ class TestEdge:
         assert (
             point_a in edge and 
             point_b in edge and 
-            not control in edge
+            control not in edge
         )
 
     def test_equals(self):
