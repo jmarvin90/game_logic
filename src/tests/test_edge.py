@@ -4,6 +4,22 @@ from geometry.point import Point
 from geometry.edge import Edge
 
 class TestEdge:
+    def test_c(self):
+        point_a = Point(1, 2)
+        point_b = Point(2, 4)
+        point_c = Point(500, 1000)
+
+        control = Point(500, 999)
+
+        short_edge = Edge(point_a, point_b)
+        mid_edge = Edge(point_a, point_c)
+        control_edge = Edge(point_a, control)
+
+        assert (
+            short_edge.c == mid_edge.c == 0 and
+            short_edge.c != control_edge.c
+        )
+
     def test_diag_distance(self):
         """"""
         point_a = Point(1, 1)
@@ -151,6 +167,18 @@ class TestEdge:
             edge_1.intersects(edge_3)
         )
 
+    def test_points_are_collinear(self):
+        point_a = Point(1, 1)
+        point_b = Point(5, 2)
+        point_c = Point(9, 3)
+        point_d = Point(13, 4)
+
+        control = Point(4, 14)
+
+        assert (
+            Edge.points_are_collinear(point_a, point_b, point_c, point_d) and 
+            not Edge.points_are_collinear(point_a, point_b, point_c, control)
+        )
 
 
     

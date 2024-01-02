@@ -1,5 +1,5 @@
 from __future__ import annotations
-from typing import Optional, List
+from typing import Optional, List, Tuple
 import math
 
 from geometry.point import Point
@@ -37,6 +37,11 @@ class Edge:
     @property
     def y_diff(self) -> float:
         return self.origin.y - self.termination.y
+
+    @property
+    def c(self) -> float:
+        """Return the y-intercept."""
+        return self.origin.y - (self.gradient * self.origin.x)
 
     @property
     def diagonal_distance(self) -> int: 
@@ -141,4 +146,13 @@ class Edge:
             points.insert(-1, Point(x, y))
 
         return points
-        
+
+    @staticmethod
+    def points_are_collinear(*points: Tuple[Point]) -> bool:
+        initial_edge = Edge(points[0], points[1])
+        for number in range(1, len(points)):
+            comparison_edge = Edge(points[0], points[number])
+            if comparison_edge.c != initial_edge.c:
+                return False
+
+        return True
