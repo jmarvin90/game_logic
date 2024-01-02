@@ -180,3 +180,4 @@ class TestEdge:
             Edge.points_are_collinear(point_a, point_b, point_c, point_d) and 
             not Edge.points_are_collinear(point_a, point_b, point_c, control)
         )
+        

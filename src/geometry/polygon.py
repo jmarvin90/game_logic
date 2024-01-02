@@ -6,31 +6,52 @@ from geometry.edge import Edge
 class Polygon:
     def __init__(self, *points):
         self.points = points
-    
+        self.edges = ()
+
     @staticmethod
-    def edges_from_points(*points: Tuple[Point]) -> tuple:
-        """Return a sequence of edges from ordered points tuple."""
-        anchor = 0
+    def remove_redundant_points(*points: Point) -> Tuple[Point]:
+        """Remove points in a series which aren't needed to plot a polygon."""
         output = []
 
-        # TODO: the algorithm here
-        
-        for item in output:
-            print(item)
+        for number, point in enumerate(points):
+            point_after = points[(number + 1) % len(points)]
+            point_before = points[number -1]
+
+            # we don't need points on the same line as the one before/after
+            if not Edge.points_are_collinear(point_before, point, point_after):
+                output.append(point)
+
+        return tuple(output)
+    
+    @staticmethod
+    def edges_from_points(*points: Point) -> Tuple[Edge]:
+        """Return a sequence of edges from ordered points tuple."""
+        rationalised_points = Polygon.remove_redundant_points(*points)
+        output = []
+
+        for number in range(len(rationalised_points)):
+            output.append(
+                Edge(
+                    rationalised_points[number], 
+                    rationalised_points[(number+1) % len(rationalised_points)]
+                )
+            )
 
         return output
 
-        """ 
+    def covers_point(self, point: Point) -> bool:
+        """Check whether the polygon covers a specified point."""
+        off_chart_point = Point(-1, point.y)
+        intersect_edge = Edge(off_chart_point, point)
 
-        0         1         2         3
-        x ------- x ------- x ------- x
-        |                             |
-        |                             |
-        |                             |
-        x ----------------- x ------- x
-        6, -1               5         4
+        crossed_edges = [
+            edge for edge in self.edges if edge.intersects(intersect_edge)
+        ]
 
-        """
+        for item in crossed_edges:
+            print(item)
 
-
-
+        if len(crossed_edges) % 2 == 0:
+            return False
+        
+        return True
