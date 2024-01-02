@@ -168,6 +168,7 @@ class TestEdge:
         )
 
     def test_points_are_collinear(self):
+        """Test collinearity check."""
         point_a = Point(1, 1)
         point_b = Point(5, 2)
         point_c = Point(9, 3)
@@ -179,8 +180,3 @@ class TestEdge:
             Edge.points_are_collinear(point_a, point_b, point_c, point_d) and 
             not Edge.points_are_collinear(point_a, point_b, point_c, control)
         )
-
-
-    
-
-    
