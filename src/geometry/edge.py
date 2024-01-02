@@ -13,6 +13,7 @@ class Edge:
 
     def __eq__(self, edge_2: Edge):
         """Check if two edges are the same."""
+        # TODO: this won't work if Edge.__contains__ is updated for point on line
         return self.origin in edge_2 and self.termination in edge_2
 
     def __contains__(self, point: Point) -> bool:
