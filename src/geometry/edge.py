@@ -149,6 +149,7 @@ class Edge:
 
     @staticmethod
     def points_are_collinear(*points: Tuple[Point]) -> bool:
+        """Check if points are collinear based on their y-intercept."""
         initial_edge = Edge(points[0], points[1])
         for number in range(1, len(points)):
             comparison_edge = Edge(points[0], points[number])
