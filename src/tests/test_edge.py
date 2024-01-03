@@ -77,6 +77,14 @@ class TestEdge:
             long_edge.gradient != skewed_edge.gradient
         )
 
+    def test_centre(self):
+        """"""
+        point_a = Point(0, 0)
+        point_b = Point(100, 100)
+        my_edge = Edge(point_a, point_b)
+        output = my_edge.centre
+        assert output == Point(50, 50)
+
     def test_parallel(self):
         """"""
         point_a = Point(5, 5)

@@ -32,11 +32,11 @@ class Edge:
 
     @property
     def x_diff(self) -> float:
-        return self.origin.x - self.termination.x
+        return self.termination.x - self.origin.x
     
     @property
     def y_diff(self) -> float:
-        return self.origin.y - self.termination.y
+        return self.termination.y - self.origin.y
 
     @property
     def y_intercept(self) -> float:
@@ -78,6 +78,13 @@ class Edge:
             return 0
         
         return self.y_diff / self.x_diff
+
+    @property
+    def centre(self) -> Point:
+        """Return the centre point of the edge."""
+        mid_x = self.origin.x + (self.x_diff / 2)
+        mid_y = self.origin.y + (self.y_diff / 2)
+        return Point(mid_x, mid_y)
 
     @staticmethod
     def orientation(point_a: Point, point_b: Point, point_c: Point) -> int:
