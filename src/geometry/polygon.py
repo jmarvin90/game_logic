@@ -37,7 +37,7 @@ class Polygon:
                 )
             )
 
-        return output
+        return tuple(output)
 
     def covers_point(self, point: Point) -> bool:
         """Check whether the polygon covers a specified point."""
