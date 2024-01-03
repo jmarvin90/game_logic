@@ -29,22 +29,22 @@ class TestPoint:
 
     def test_scaled(self):
         """Scaled."""
-        # TODO - write this test
+        # TODO: write this test
         assert True
 
     def test_inverse(self):
         """Scaled."""
-        # TODO - write this test
+        # TODO: write this test
         assert True
 
     def test_binary_index(self):
         """Binary index."""
-        # TODO - write this test
+        # TODO: write this test
         assert True
 
     def test_binary_grid(self):
         """Binary grid."""
-        # TODO - write this test
+        # TODO: write this test
         assert True
 
     def test_distanct_to(self):
@@ -55,10 +55,10 @@ class TestPoint:
     
     def test_points_in_rad(self):
         """Test for points in radius."""
-        # TODO - write this test
+        # TODO: write this test
         assert True
 
     def test_is_in_bounds(self):
         """Test if point is in bounds."""
-        # TODO - write this test
+        # TODO: write this test
         assert True

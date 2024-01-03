@@ -4,7 +4,7 @@ from geometry.point import Point
 from geometry.edge import Edge
 
 class TestEdge:
-    def test_c(self):
+    def test_y_intercept(self):
         point_a = Point(1, 2)
         point_b = Point(2, 4)
         point_c = Point(500, 1000)
@@ -16,8 +16,8 @@ class TestEdge:
         control_edge = Edge(point_a, control)
 
         assert (
-            short_edge.c == mid_edge.c == 0 and
-            short_edge.c != control_edge.c
+            short_edge.y_intercept == mid_edge.y_intercept == 0 and
+            short_edge.y_intercept != control_edge.y_intercept
         )
 
     def test_diag_distance(self):
@@ -124,12 +124,12 @@ class TestEdge:
 
     def test_interpolate(self):
         """"""
-        # TODO - write this test
+        # TODO: write this test
         assert True
 
     def test_intermediary_points(self):
         """"""
-        # TODO - write this test
+        # TODO: write this test
         assert True
 
     def test_orientation(self):
@@ -163,8 +163,8 @@ class TestEdge:
         edge_3 = Edge(point_e, point_f)
 
         assert(
-            edge_1.intersects(edge_2) and not
-            edge_1.intersects(edge_3)
+            edge_1.intersects(edge_2) and
+            not edge_1.intersects(edge_3)
         )
 
     def test_points_are_collinear(self):

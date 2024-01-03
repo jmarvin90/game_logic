@@ -45,8 +45,8 @@ class TestPolygon:
 
         output = Polygon.edges_from_points(*my_points)
 
-        # TODO - the assertion
-        assert True
+        # TODO: make this assertion more specific (e.g. specific edges)
+        assert len(output) == 4
     
     def test_covers_point(self):
         my_points = (
@@ -69,10 +69,6 @@ class TestPolygon:
 
         inside = Point(8, 4)
         outside = Point(12, 5)
-
-        output = (
-            my_polygon.covers_point(outside)
-        )
 
         """ 
 

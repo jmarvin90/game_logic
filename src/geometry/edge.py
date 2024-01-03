@@ -39,7 +39,7 @@ class Edge:
         return self.origin.y - self.termination.y
 
     @property
-    def c(self) -> float:
+    def y_intercept(self) -> float:
         """Return the y-intercept."""
         return self.origin.y - (self.gradient * self.origin.x)
 
@@ -107,7 +107,7 @@ class Edge:
     
     def intersects(self, edge: Edge) -> bool:
         """Check if the current edge intersects another."""
-        # TODO - streamline
+        # TODO: streamline
         acd = Edge.orientation(self.origin, edge.origin, edge.termination)
         bcd = Edge.orientation(self.termination, edge.origin, edge.termination)
         abc = Edge.orientation(self.origin, self.termination, edge.origin)
@@ -134,6 +134,7 @@ class Edge:
     
     def intermediary_points(self, n_steps: Optional[int]=None) -> List[Point]:
         """Return intermediary points between start and end."""
+        # TODO: perhaps could be a cached property
         points = [self.origin, self.termination]
         
         if n_steps is None: 
@@ -153,7 +154,7 @@ class Edge:
         initial_edge = Edge(points[0], points[1])
         for number in range(1, len(points)):
             comparison_edge = Edge(points[0], points[number])
-            if comparison_edge.c != initial_edge.c:
+            if comparison_edge.y_intercept != initial_edge.y_intercept:
                 return False
 
         return True
