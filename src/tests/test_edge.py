@@ -4,7 +4,11 @@ from geometry.point import Point
 from geometry.edge import Edge
 
 class TestEdge:
+    # TODO: arrange the tests into a sensible order
+    # TODO: make sure all the tests have sensible docstrings and comments
+    # TODO: add necessary fixtures
     def test_y_intercept(self):
+        """"""
         point_a = Point(1, 2)
         point_b = Point(2, 4)
         point_c = Point(500, 1000)
@@ -81,9 +85,14 @@ class TestEdge:
         """"""
         point_a = Point(0, 0)
         point_b = Point(100, 100)
-        my_edge = Edge(point_a, point_b)
-        output = my_edge.centre
-        assert output == Point(50, 50)
+        
+        edge_1 = Edge(point_a, point_b)
+        edge_2 = Edge(point_b, point_a)
+
+        control = Point(50,50)
+        assert (
+            edge_1.centre == edge_2.centre == control
+        )
 
     def test_parallel(self):
         """"""

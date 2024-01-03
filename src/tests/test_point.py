@@ -3,6 +3,9 @@ import pytest
 from geometry.point import Point
 
 class TestPoint:
+    # TODO: arrange the tests into a sensible order
+    # TODO: make sure all the tests have sensible docstrings and comments
+    # TODO: add necessary fixtures
     def test_add(self):
         """Adding two points together.
 
