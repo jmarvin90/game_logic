@@ -41,6 +41,9 @@ class Polygon:
 
     def covers_point(self, point: Point) -> bool:
         """Check whether the polygon covers a specified point."""
+        # TODO: this method probably should be on the Point
+        # Moving it to Point (e.g. Point.is_inside(polygon)) would create a 
+        # circular import - need to find a fix
         off_chart_point = Point(-1, point.y)
         intersect_edge = Edge(off_chart_point, point)
 

@@ -9,7 +9,7 @@ class Edge:
     def __init__(self, origin: Point, termination: Point):
         # TODO: may be better to reimplement some @properties
         # It is not likely that they'll need to be recomputed once they've been
-        # calcualted for the first time 
+        # calcualted for the first time; perhaps cached_property is better
 
         self.origin = origin
         self.termination = termination
@@ -24,7 +24,8 @@ class Edge:
         return (
             self.origin == point or
             self.termination == point 
-            # TODO: implement 'point is on line' check
+            # TODO: implement 'point is on line' check; 
+            # e.g. Point is in self.intermediary_points
         )
 
     def __str__(self):
