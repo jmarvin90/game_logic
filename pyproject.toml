@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "gamelogic"
+version = "0.1.0"
+description = "Logic for 2D games"
+authors = ["James Marvin <j_marvin@mail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^7.4.3"
+coverage = "^7.3.4"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
