@@ -3,198 +3,193 @@ import pytest
 from geometry.point import Point
 from geometry.edge import Edge
 
-class TestEdge:
-    # TODO: arrange the tests into a sensible order
-    # TODO: make sure all the tests have sensible docstrings and comments
-    # TODO: add necessary fixtures
-    def test_y_intercept(self):
-        """"""
-        point_a = Point(1, 2)
-        point_b = Point(2, 4)
-        point_c = Point(500, 1000)
+@pytest.fixture
+def short_diagonal_edge():
+    return Edge(Point(2, 4), Point(8, 16))
 
-        control = Point(500, 999)
+@pytest.fixture
+def short_diagonal_edge_duplicate():
+    return Edge(Point(2, 4), Point(8, 16))
 
-        short_edge = Edge(point_a, point_b)
-        mid_edge = Edge(point_a, point_c)
-        control_edge = Edge(point_a, control)
+@pytest.fixture
+def short_diagonal_edge_inverted():
+    return Edge(Point(8, 16), Point(2, 4))
 
-        assert (
-            short_edge.y_intercept == mid_edge.y_intercept == 0 and
-            short_edge.y_intercept != control_edge.y_intercept
+@pytest.fixture
+def short_diagonal_edge_cross():
+    return Edge(Point(2, 16), Point(8, 4))
+
+@pytest.fixture
+def long_diagonal_edge():
+    return Edge(Point(2, 4), Point(500, 1_000))
+
+@pytest.fixture
+def long_diagonal_edge_skewed():
+    return Edge(Point(2, 4), Point(500, 999))
+
+@pytest.fixture
+def vertical_edge():
+    return Edge(Point(1, 1), Point(1, 1_000))
+
+@pytest.fixture
+def parallel_vertical_edge():
+    return Edge(Point(2, 1), Point(2, 1_000))
+
+@pytest.fixture
+def vertical_edge_skewed():
+    return Edge(Point(1, 1), Point(2, 1_000))
+
+@pytest.fixture
+def horizontal_edge():
+    return Edge(Point(1, 1), Point(1_000, 1))
+
+@pytest.fixture
+def horizontal_edge_skewed():
+    return Edge(Point(1, 1), Point(1_000, 2))
+
+
+# TODO: arrange the tests into a sensible order
+# TODO: make sure all the tests have sensible docstrings and comments
+# TODO: add necessary fixtures
+
+def test_y_intercept(
+    short_diagonal_edge,
+    long_diagonal_edge,
+    long_diagonal_edge_skewed
+):
+    assert (
+        short_diagonal_edge.y_intercept == long_diagonal_edge.y_intercept == 0 and
+        short_diagonal_edge.y_intercept != long_diagonal_edge_skewed.y_intercept
+    )
+
+def test_diag_distance(short_diagonal_edge):
+    assert short_diagonal_edge.diagonal_distance == 12
+
+def test_length(short_diagonal_edge):
+    assert short_diagonal_edge.length == pytest.approx(13.416407864998739)
+
+def test_is_vertical(vertical_edge, vertical_edge_skewed):
+    assert (
+        vertical_edge.is_vertical and not
+        vertical_edge_skewed.is_vertical
+    )
+
+def test_is_horizontal(horizontal_edge, horizontal_edge_skewed):
+    assert (
+        horizontal_edge.is_horizontal and not
+        horizontal_edge_skewed.is_horizontal
+    )
+
+def test_gradient(
+    short_diagonal_edge,
+    long_diagonal_edge,
+    long_diagonal_edge_skewed
+):
+    assert (
+        short_diagonal_edge.gradient == 2 and
+        short_diagonal_edge.gradient == long_diagonal_edge.gradient and
+        long_diagonal_edge.gradient != long_diagonal_edge_skewed.gradient
+    )
+
+def test_centre(short_diagonal_edge, short_diagonal_edge_inverted):
+    control = Point(5,10)
+    print(short_diagonal_edge.centre)
+    assert (
+        short_diagonal_edge.centre == short_diagonal_edge.centre == control
+    )
+
+def test_parallel(
+    vertical_edge, 
+    parallel_vertical_edge, 
+    vertical_edge_skewed
+):
+    assert(
+        vertical_edge.is_parallel_to(parallel_vertical_edge) and 
+        not vertical_edge_skewed.is_parallel_to(parallel_vertical_edge)
+    )
+
+def test_contains(short_diagonal_edge):
+    origin = Point(2, 4)
+    termination = Point(8, 16)
+    control = Point(2, 1)
+
+    assert (
+        origin in short_diagonal_edge and 
+        termination in short_diagonal_edge and 
+        control not in short_diagonal_edge
+    )
+
+def test_equals(
+    short_diagonal_edge,
+    short_diagonal_edge_duplicate,
+    short_diagonal_edge_inverted,
+    long_diagonal_edge
+):
+    assert (
+        short_diagonal_edge == short_diagonal_edge_duplicate and
+        short_diagonal_edge == short_diagonal_edge_inverted and
+        short_diagonal_edge != long_diagonal_edge
+    )
+
+def test_interpolate():
+    # TODO: write this test
+    assert True
+
+def test_intermediary_points():
+    # TODO: write this test
+    assert True
+
+def test_orientation(
+    short_diagonal_edge,
+    short_diagonal_edge_cross,
+    vertical_edge
+):
+    assert (
+        # Diagonal l->r, then horizontal l
+        Edge.orientation(
+            short_diagonal_edge.origin, 
+            short_diagonal_edge.termination,
+            short_diagonal_edge_cross.origin
+        ) == -1 and
+        # Diagonal l->r, then vertical d
+        Edge.orientation(
+            short_diagonal_edge.origin, 
+            short_diagonal_edge.termination,
+            short_diagonal_edge_cross.termination
+        ) == 1 and
+        # Vertical start to finish
+        Edge.orientation(
+            vertical_edge.origin, 
+            vertical_edge.centre, 
+            vertical_edge.termination
+        ) == 0
+    )
+
+def test_intersects(
+    short_diagonal_edge, 
+    short_diagonal_edge_cross, 
+    vertical_edge
+):
+    assert(
+        short_diagonal_edge.intersects(short_diagonal_edge_cross) and
+        not short_diagonal_edge.intersects(vertical_edge)
+    )
+
+def test_points_are_collinear(
+    short_diagonal_edge,
+    long_diagonal_edge,
+    long_diagonal_edge_skewed
+):
+    assert (
+        Edge.points_are_collinear(
+            short_diagonal_edge.origin, 
+            short_diagonal_edge.termination, 
+            long_diagonal_edge.termination
+        ) and not
+        Edge.points_are_collinear(
+            short_diagonal_edge.origin,
+            short_diagonal_edge.termination,
+            long_diagonal_edge_skewed.termination
         )
-
-    def test_diag_distance(self):
-        """"""
-        point_a = Point(1, 1)
-        point_b = Point(3, 3)
-        assert Edge(point_a, point_b).diagonal_distance == 2
-
-    def test_length(self):
-        """"""
-        point_a = Point(5, 5)
-        point_b = Point(3, 3)
-        assert Edge(point_a, point_b).length == pytest.approx(2.82842712474619)
-
-    def test_is_vertical(self):
-        """"""
-        point_a = Point(1, 1)
-        point_b = Point(1, 1_000)
-        point_c = Point(2, 1_000)
-
-        vertical = Edge(point_a, point_b)
-        nearly_vertical = Edge(point_a, point_c)
-
-        assert (
-            vertical.is_vertical and not
-            nearly_vertical.is_vertical
-        )
-
-    def test_is_horizontal(self):
-        """"""
-        point_a = Point(1, 1)
-        point_b = Point(1_000, 1)
-        point_c = Point(1_000, 2)
-
-        horizontal = Edge(point_a, point_b)
-        nearly_horizontal = Edge(point_a, point_c)
-
-        assert (
-            horizontal.is_horizontal and not
-            nearly_horizontal.is_horizontal
-        )
-
-    def test_gradient(self):
-        """"""
-        point_a = Point(1, 1)
-        point_b = Point(5, 5)
-        point_c = Point(900, 900)
-        point_d = Point(900, 901)
-
-        short_edge = Edge(point_a, point_b)
-        long_edge = Edge(point_a, point_c)
-        skewed_edge = Edge(point_a, point_d)
-
-        assert (
-            short_edge.gradient == 1 and
-            short_edge.gradient == long_edge.gradient and
-            long_edge.gradient != skewed_edge.gradient
-        )
-
-    def test_centre(self):
-        """"""
-        point_a = Point(0, 0)
-        point_b = Point(100, 100)
-        
-        edge_1 = Edge(point_a, point_b)
-        edge_2 = Edge(point_b, point_a)
-
-        control = Point(50,50)
-        assert (
-            edge_1.centre == edge_2.centre == control
-        )
-
-    def test_parallel(self):
-        """"""
-        point_a = Point(5, 5)
-        point_b = Point(995, 995)
-
-        point_c = Point(994, 994)
-        point_d = Point(1_094, 1_094)
-
-        point_e = Point(1_094, 1_095)
-
-        edge_a = Edge(point_a, point_b)
-        edge_b = Edge(point_c, point_d)
-        skewed_edge = Edge(point_c, point_e)
-
-        assert(
-            edge_a.is_parallel_to(edge_b) and not
-            edge_a.is_parallel_to(skewed_edge)
-        )
-
-    def test_contains(self):
-        point_a = Point(1, 1)
-        point_b = Point(3, 3)
-        edge = Edge(point_a, point_b)
-        control = Point(5, 5)
-
-        assert (
-            point_a in edge and 
-            point_b in edge and 
-            control not in edge
-        )
-
-    def test_equals(self):
-        point_a = Point(1, 1)
-        point_b = Point(3, 3)
-        point_c = Point(5, 5)
-
-        edge_1 = Edge(point_a, point_b)
-        edge_2 = Edge(point_b, point_a)
-        control = Edge(point_a, point_c)
-
-        assert (
-            edge_1 == edge_2 and
-            not edge_1 == control
-        )
-
-    def test_interpolate(self):
-        """"""
-        # TODO: write this test
-        assert True
-
-    def test_intermediary_points(self):
-        """"""
-        # TODO: write this test
-        assert True
-
-    def test_orientation(self):
-        """Check clockwise, counter-clock, vertical."""
-        point_a = Point(5, 5)
-        point_b = Point(5, 10)
-
-        point_l = Point(1, 10)
-        point_r = Point(10, 10)
-        point_t = Point(5, 15)
-
-        assert (
-            Edge.orientation(point_a, point_b, point_l) == -1 and
-            Edge.orientation(point_a, point_b, point_r) == 1 and
-            Edge.orientation(point_a, point_b, point_t) == 0
-        )
-
-    def test_intersects(self):
-        """"""
-        point_a = Point(1, 1)
-        point_b = Point(5, 5)
-
-        point_c = Point(5, 1)
-        point_d = Point(1, 5)
-
-        point_e = Point(2, 2)
-        point_f = Point(6, 6)
-
-        edge_1 = Edge(point_a, point_b)
-        edge_2 = Edge(point_c, point_d)
-        edge_3 = Edge(point_e, point_f)
-
-        assert(
-            edge_1.intersects(edge_2) and
-            not edge_1.intersects(edge_3)
-        )
-
-    def test_points_are_collinear(self):
-        """Test collinearity check."""
-        point_a = Point(1, 1)
-        point_b = Point(5, 2)
-        point_c = Point(9, 3)
-        point_d = Point(13, 4)
-
-        control = Point(4, 14)
-
-        assert (
-            Edge.points_are_collinear(point_a, point_b, point_c, point_d) and 
-            not Edge.points_are_collinear(point_a, point_b, point_c, control)
-        )
+    )
         
