@@ -49,9 +49,6 @@ def horizontal_edge_skewed():
 
 
 # TODO: arrange the tests into a sensible order
-# TODO: make sure all the tests have sensible docstrings and comments
-# TODO: add necessary fixtures
-
 def test_y_intercept(
     short_diagonal_edge,
     long_diagonal_edge,
