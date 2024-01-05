@@ -44,7 +44,7 @@ class Point:
         return (self.x * point.x) + (self.y * point.y)
     
     def scaled(self, scale_factor: float):
-	    return Point(self.x * scale_factor, self.y * scale_factor)
+        return Point(self.x * scale_factor, self.y * scale_factor)
 
     @staticmethod
     def inverse_coordinate(coordinate: int) -> int: 
