@@ -2,66 +2,57 @@ import pytest
 
 from geometry.point import Point
 
-class TestPoint:
-    # TODO: arrange the tests into a sensible order
-    # TODO: make sure all the tests have sensible docstrings and comments
-    # TODO: add necessary fixtures
-    def test_add(self):
-        """Adding two points together.
+@pytest.fixture
+def a():
+    return Point(2, 2)
 
-        A + B = C, where A.x + B.x == C.x, etc.
-        """
-        point_a = Point(3, 3)
-        point_b = Point(5, 5)
-        control = Point(8, 8)
-        assert point_a + point_b == control
+@pytest.fixture
+def a_dup():
+    return Point(2, 2)
 
-    def test_sub(self):
-        """Subtracting two points."""
-        point_a = Point(5, 5)
-        point_b = Point(3, 3)
-        control = Point(2, 2)
-        assert point_a - point_b == control
+@pytest.fixture
+def b():
+    return Point(5, 5)
 
-    def test_eq(self):
-        """Checking equality for points with same coordinates."""
-        point_a = Point(3, 3)
-        point_b = Point(3, 3)
-        point_c = Point(7, 7)
-        assert point_a == point_b and point_a != point_c
+@pytest.fixture
+def c():
+    return Point(7, 7)
 
-    def test_scaled(self):
-        """Scaled."""
-        # TODO: write this test
-        assert True
+# TODO: arrange the tests into a sensible order
+# TODO: make sure all the tests have sensible docstrings and comments
+# TODO: add necessary fixtures
+def test_add(a, b, c):
+    assert a + b == c
 
-    def test_inverse(self):
-        """Scaled."""
-        # TODO: write this test
-        assert True
+def test_sub(a, b, c):
+    assert c - b == a
 
-    def test_binary_index(self):
-        """Binary index."""
-        # TODO: write this test
-        assert True
+def test_eq(a, a_dup, b):
+    assert a == a_dup and a != b
 
-    def test_binary_grid(self):
-        """Binary grid."""
-        # TODO: write this test
-        assert True
+def test_scaled():
+    # TODO: write this test
+    assert True
 
-    def test_distanct_to(self):
-        """Distance between two points."""
-        point_a = Point(1, 1)
-        point_b = Point(3, 3)
-        assert point_a.distance_to(point_b) == pytest.approx(2.8284271247461903)
-    
-    def test_points_in_rad(self):
-        """Test for points in radius."""
-        # TODO: write this test
-        assert True
+def test_inverse():
+    # TODO: write this test
+    assert True
 
-    def test_is_in_bounds(self):
-        """Test if point is in bounds."""
-        # TODO: write this test
-        assert True
+def test_binary_index():
+    # TODO: write this test
+    assert True
+
+def test_binary_grid():
+    # TODO: write this test
+    assert True
+
+def test_distanct_to(a, c):
+    assert a.distance_to(c) == pytest.approx(7.0710678118654755)
+
+def test_points_in_rad():
+    # TODO: write this test
+    assert True
+
+def test_is_in_bounds():
+    # TODO: write this test
+    assert True
