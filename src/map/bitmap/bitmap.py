@@ -6,8 +6,8 @@ import struct
 from colour_table import ColourTableEntry
 
 class BitMap:
+    """Type enabling the reading of basic (e.g. 1-bpp) bitmap images."""
     def __init__(self, image_file_path: str):
-        """Type enabling the reading of basic (e.g. 1-bpp) bitmap images."""
         self.image_file_path = image_file_path
 
         with open(image_file_path, 'rb') as bmp:
