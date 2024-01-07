@@ -3,7 +3,7 @@ from functools import cached_property
 from typing import List
 import struct
 
-from colour_table import ColourTableEntry
+from map.bitmap.colour_table import ColourTableEntry
 
 class BitMap:
     """Type enabling the reading of basic (e.g. 1-bpp) bitmap images."""
@@ -88,17 +88,3 @@ class BitMap:
     def n_colours_in_palette(self) -> int:
         """Total number of colours in the image (and the file colour table)."""
         return int.from_bytes(self.dib_header[32:36], byteorder='little')
-
-
-my_bmp = BitMap(image_file_path='src/map/bitmap/test_files/1bpp-321x240.bmp')
-print(
-    my_bmp.file_header, 
-    my_bmp.file_size_in_bytes,
-    my_bmp.image_width_px, 
-    my_bmp.image_height_px,
-    my_bmp.n_colours_in_palette, 
-    my_bmp.image_data_offset
-)
-
-for index, colour in enumerate(my_bmp.colour_table):
-    print(index, colour.is_black, colour.is_white)
