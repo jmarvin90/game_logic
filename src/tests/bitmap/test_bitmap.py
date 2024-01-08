@@ -19,3 +19,8 @@ def test_colour_table(monochrome_bitmap):
         monochrome_bitmap.colour_table[0].is_black == True and
         monochrome_bitmap.colour_table[1].is_white == True
     )
+
+def test_get_pixel_array(monochrome_bitmap):
+    array = monochrome_bitmap.get_pixel_array()
+    print(array)
+    assert False

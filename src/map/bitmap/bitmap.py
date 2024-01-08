@@ -13,28 +13,36 @@ class BitMap:
         with open(image_file_path, 'rb') as bmp:
             self.raw = bmp.read()
 
+        self.dib_header_start = 14
+
     @cached_property
     def bmp_header(self) -> bytes:
-        """This header is exactly 14 bytes."""
+        """Return the bitmap header (exactly 14 bytes)."""
         return self.raw[:14]
 
     @cached_property
     def image_data_offset(self) -> int:
-        """Starting address of image data."""
+        """Return the starting starting address (offset) of image data."""
         return int.from_bytes(self.bmp_header[-4:], byteorder='little')
 
     @cached_property
     def dib_header_size_bytes(self) -> int:
-        """DIB header size is specified in bytes 14-18."""
+        """Return the DIB header size (specified in bytes 14-18)."""
         return int.from_bytes(self.raw[14:18], byteorder='little')
 
     @cached_property
+    def dib_header_end(self) -> int:
+        return self.dib_header_start + self.dib_header_size_bytes
+
+    @cached_property
     def dib_header(self) -> bytes:
-        """DIB header starts at byte 14; length is in dib_header_size_bytes."""
-        return self.raw[14:14+self.dib_header_size_bytes]
+        """Return the DIB header (starting at byte 14; variable length."""
+        # DIB header starts at byte 14; length is in dib_header_size_bytes."""
+        return self.raw[self.dib_header_start:self.dib_header_end]
 
     @cached_property
     def n_colours_in_palette(self) -> int:
+        """Return the number of colours in the palette from DIB header."""
         return int.from_bytes(self.dib_header[32:36], byteorder='little')
 
     @cached_property
@@ -42,10 +50,10 @@ class BitMap:
         """Return a list of entries from the colour table."""
         output = []
 
-        # Raw bytes are between the end of the DIB header and the start of
-        # the pixel data
+        # Colour table bytes are between the end of the DIB header and the start 
+        # of the pixel data
         colour_table_bytes = self.raw[
-            14+self.dib_header_size_bytes:self.image_data_offset
+            self.dib_header_end:self.image_data_offset
         ]
 
         # The number of entries in the table should be specified in the DIB 
@@ -88,3 +96,11 @@ class BitMap:
     def n_colours_in_palette(self) -> int:
         """Total number of colours in the image (and the file colour table)."""
         return int.from_bytes(self.dib_header[32:36], byteorder='little')
+
+    def get_pixel_array(self) -> list:
+        """"""
+        pixel_array_bytes = self.raw[
+            self.image_data_offset:self.image_data_offset+self.image_width_px
+        ]
+
+        return pixel_array_bytes
