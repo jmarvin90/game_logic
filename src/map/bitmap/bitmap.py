@@ -74,27 +74,27 @@ class BitMap:
 
     @cached_property
     def file_size_in_bytes(self) -> int:
-        """The total file size, in bytes."""
+        """Return the total file size, in bytes."""
         return int.from_bytes(self.bmp_header[2:4], byteorder='little')
 
     @cached_property
     def image_width_px(self) -> int:
-        """Width of the image in pixels."""
+        """Return the width of the image in pixels."""
         return int.from_bytes(self.dib_header[4:8], byteorder='little')
 
     @cached_property
     def image_height_px(self) -> int:
-        """Height of the image in pixels."""
+        """Return the height of the image in pixels."""
         return int.from_bytes(self.dib_header[8:12], byteorder='little')
 
     @cached_property
     def bits_per_pixel(self) -> int:
-        """Number of bits used to represent each pixel in pixel array."""
+        """Return the number of bits used to per pixel in the pixel array."""
         return int.from_bytes(self.dib_header[14:16], byteorder='little')
 
     @cached_property
     def n_colours_in_palette(self) -> int:
-        """Total number of colours in the image (and the file colour table)."""
+        """Return the total number of colours in the image (and colour table)."""
         return int.from_bytes(self.dib_header[32:36], byteorder='little')
 
     def get_pixel_array(self) -> list:
