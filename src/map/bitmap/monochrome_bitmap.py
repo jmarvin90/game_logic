@@ -18,7 +18,10 @@ class MonochromeBitMap(BitMap):
         byte = self.get_pixel_array()[target_row_index][target_byte_index]
 
         # Moves the single set bit to the 'first' position
-        bit = (byte & query_bitmask) >> (7 - target_bit_position)
+        # bit = (byte & query_bitmask) >> (7 - target_bit_position)
+        
+        # Achieves the same as above, though possibly more simply
+        bit = 1 if byte & query_bitmask else 0
 
         # The colour table entry for the bit value
         return self.colour_table[bit]
