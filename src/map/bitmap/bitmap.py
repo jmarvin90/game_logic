@@ -1,7 +1,5 @@
 from __future__ import annotations
 from functools import cached_property
-from typing import List
-import struct
 
 from map.bitmap.colour_table import ColourTableEntry
 
@@ -13,25 +11,37 @@ class BitMap:
         with open(image_file_path, 'rb') as bmp:
             self.raw = bmp.read()
 
+        # DIB header start position is fixed at 14
         self.dib_header_start = 14
 
     @cached_property
     def bmp_header(self) -> bytes:
         """Return the bitmap header (exactly 14 bytes)."""
-        return self.raw[:14]
+        return self.raw[:self.dib_header_start]
 
     @cached_property
     def image_data_offset(self) -> int:
         """Return the starting starting address (offset) of image data."""
+        # Last four bytes of the BMP header
         return int.from_bytes(self.bmp_header[-4:], byteorder='little')
 
     @cached_property
+    def image_data_end(self) -> int:
+        """Return the address representing the end of the image data."""
+        # There is a row for each pixel in the images' height
+        return (
+            self.image_data_offset + 
+            (self.image_data_row_width * self.image_height_px)
+        )
+
+    @cached_property
     def dib_header_size_bytes(self) -> int:
-        """Return the DIB header size (specified in bytes 14-18)."""
+        """Return the DIB header size (specified in bytes 14-18 of the file)."""
         return int.from_bytes(self.raw[14:18], byteorder='little')
 
     @cached_property
     def dib_header_end(self) -> int:
+        """Return the header end calculated by start byte + size in bytes."""
         return self.dib_header_start + self.dib_header_size_bytes
 
     @cached_property
@@ -39,11 +49,6 @@ class BitMap:
         """Return the DIB header (starting at byte 14; variable length."""
         # DIB header starts at byte 14; length is in dib_header_size_bytes."""
         return self.raw[self.dib_header_start:self.dib_header_end]
-
-    @cached_property
-    def n_colours_in_palette(self) -> int:
-        """Return the number of colours in the palette from DIB header."""
-        return int.from_bytes(self.dib_header[32:36], byteorder='little')
 
     @cached_property
     def colour_table(self):
@@ -69,18 +74,37 @@ class BitMap:
     @cached_property
     def file_header(self) -> str:
         """The BMP header."""
-        # The first two bytes of the file
+        # The first two bytes of the file / bmp header (same thing)
         return self.bmp_header[:2].decode()
 
     @cached_property
     def file_size_in_bytes(self) -> int:
         """Return the total file size, in bytes."""
+        # Bytes 2-4 of the file / bmp header (same thing)
         return int.from_bytes(self.bmp_header[2:4], byteorder='little')
 
     @cached_property
     def image_width_px(self) -> int:
         """Return the width of the image in pixels."""
         return int.from_bytes(self.dib_header[4:8], byteorder='little')
+
+    @cached_property
+    def image_data_bits_per_row(self) -> int:
+        """Return the length of the rows containing pixel data."""
+        return self.bits_per_pixel * self.image_width_px
+
+    @cached_property
+    def image_data_row_width_bytes(self) -> int:
+        """Return the length of the rows containing pixel data."""
+        return int(((self.image_data_bits_per_row + 31) / 32) * 4)
+
+    @cached_property
+    def image_data_row_padding_bits(self) -> int:
+        """Return the number of bits for the end-of-row padding."""
+        return (
+            (self.image_data_row_width_bytes * 8) - 
+            self.image_data_bits_per_row
+        )
 
     @cached_property
     def image_height_px(self) -> int:
@@ -94,13 +118,30 @@ class BitMap:
 
     @cached_property
     def n_colours_in_palette(self) -> int:
-        """Return the total number of colours in the image (and colour table)."""
+        """Return the number of colours in the palette from DIB header."""
+        # Found in bytes 32-36 of the dib header (not of the file!)
         return int.from_bytes(self.dib_header[32:36], byteorder='little')
 
     def get_pixel_array(self) -> list:
-        """"""
-        pixel_array_bytes = self.raw[
-            self.image_data_offset:self.image_data_offset+self.image_width_px
-        ]
+        """Return a list of byte arrays representing pixel rows in the image."""
+        # TODO: I'm not sure if this is implemented nicely; or whether there's
+        # some alternative way to e.g. get a series of bits instead
+        pixel_array = []
 
-        return pixel_array_bytes
+        # BMP image data is most often stored 'upside down', so we loop the data
+        # in reverse - row by row
+        for pixel in reversed(range(self.image_height_px)):
+            start = (
+                self.image_data_offset + (
+                    self.image_data_row_width_bytes * pixel
+                )
+            )
+
+            pixel_array.append(
+                self.raw[
+                    start:
+                    start+self.image_data_row_width_bytes
+                ]
+            )
+
+        return pixel_array
