@@ -34,10 +34,10 @@ class ColourTableEntry:
     def is_white(self) -> bool:
         """Boolean check for table entry indicating white."""
         # return self.rgb == (255, 255, 255)    <- this works; is likely slower
-        return self.inbytes == b'\xff\xff\xff\x00' # assumes white == b'\xff\'
+        return self.inbytes == b'\xff\xff\xff\x00'
 
     @cached_property
     def is_black(self) -> bool:
         """Boolean check for table entry indicating black."""
         # return self.rgb == (0, 0, 0)          <- this works; is likely slower
-        return self.inbytes == b'\x00\x00\x00\x00' # assumes black == b'\x00\'
+        return self.inbytes == b'\x00\x00\x00\x00'
