@@ -5,6 +5,9 @@ class ColourTableEntry:
         """Eentry derived from bytes (4) from a bitmap colour table."""
         self.inbytes = inbytes
 
+    def __str__(self):
+        return str(self.rgb)
+
     @cached_property
     def red(self) -> int:
         """Red value contained in third byte."""
