@@ -38,12 +38,12 @@ def test_get_image_data_padding_bits(monochrome_bitmap):
 
 def test_query_pixel_colour(monochrome_bitmap):
 
-    # All those pixels should be white (the vertical in the 'T')
+    # All these pixels should be white (the vertical in the 'T')
     whites = [
         monochrome_bitmap.query_pixel_colour(8, i).is_white for i in range(4, 10)
     ]
 
-    # All those pixels should be black (the horizontal at the top of the image)
+    # All these pixels should be black (the horizontal at the top of the image)
     blacks = [
         monochrome_bitmap.query_pixel_colour(i, 0).is_black for i in range(0, 10)
     ]
