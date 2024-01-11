@@ -5,8 +5,7 @@ class SearchMap:
     def __init__(self, map: int=0):
         self._map = map
 
-    @property
-    def str_map(self) -> str: 
+    def __str__(self) -> str: 
         """Return a string representation of the map."""
         str_map_val = str(bin(self._map))[2:]
         return str_map_val.rjust(constants.SEARCH_MAP_SIZE**2, "0")

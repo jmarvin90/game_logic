@@ -21,19 +21,6 @@ class Point:
     def __sub__(self, point: Point) -> Point:
         return Point(self.x - point.x, self.y - point.y)
 
-    def __gt__(self, point: Point) -> bool:
-        """Check if a point is further from origin."""
-        # TODO: this might not work
-        # What if there are two points equidistant from origin?
-        # This was originally supposed to enable sorting of points in a sequence
-        # but that could be achieved by other means
-        return self.distance_to(Point(0, 0)) > point.distance_to(Point(0, 0))
-
-    def __lt__(self, point: Point) -> bool:
-        """Check if a point is closer to origin."""
-        # TODO: as above
-        return self.distance_to(Point(0, 0)) < point.distance_to(Point(0, 0))
-
     def __mul__(self, point: Point) -> Point:
         """"""
         # TODO: docstring & check if multiplication is appropriate
@@ -61,6 +48,11 @@ class Point:
     def y(self) -> int: 
         """Return the point Y coordinate."""
         return self._y
+
+    @property
+    def distance_to_origin(self) -> float:
+        """Return the distance to the origin (0, 0). Useful for sorting."""
+        return self.distance_to(Point(0,0))
     
     @property
     def inverse_x(self) -> int:
