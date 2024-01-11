@@ -2,9 +2,7 @@ from map.bitmap.bitmap import BitMap
 from map.bitmap.colour_table import ColourTableEntry
 
 class MonochromeBitMap(BitMap):
-    def __init__(self, image_file_path: str):
-        super().__init__(image_file_path)
-
+    
     def query_pixel_colour(self, x: int, y: int) -> ColourTableEntry:
         """Return a colour table entry for a specified pixel."""
         
