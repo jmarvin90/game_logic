@@ -29,8 +29,8 @@ class Point:
     
     def scaled(self, scale_factor: float):
         return Point(
-            x = int(self.x * scale_factor), 
-            y = int(self.y * scale_factor)
+            x = self.x * scale_factor, 
+            y = self.y * scale_factor
         )
         
     @property
