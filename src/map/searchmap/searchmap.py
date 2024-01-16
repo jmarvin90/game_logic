@@ -26,6 +26,7 @@ class SearchMap:
 
     @cached_property
     def n_bits(self):
+        """Return the total number of bits in the searchmap."""
         return self.map_height_px * self.map_width_px
 
     def __str__(self) -> str:
@@ -44,6 +45,7 @@ class SearchMap:
         return str_map_val.rjust(self.n_bits, "0")
 
     def __max_grid_val(self) -> int:
+        """Return the maximum possible raw searchmap number."""
         return (2**self.n_bits) - 1
 
     def reveal(self, point: Point) -> None: 
@@ -58,15 +60,18 @@ class SearchMap:
             self.reveal(given_point)
 
     def invert_point(self, point: Point) -> Point:
+        """Return a point with x, y inverted (top -> bottom, left -> right)."""
         invert_x = (self.map_width_px - point.x) -1
         invert_y = (self.map_height_px - point.y) -1
         return Point(invert_x, invert_y)
 
     def grid_index_pos(self, point: Point) -> int:
+        """Return the searchmap bit index position for a given point."""
         inverted = self.invert_point(point)
         return (self.map_width_px * inverted.y) + inverted.x
 
     def grid_binary_value(self, point: Point) -> int:
+        """Return the binary value for a point's searchmap index position."""
         return 2 ** self.grid_index_pos(point)
 
     def get_points_in_search_radius(
