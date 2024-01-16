@@ -9,14 +9,20 @@ class SearchMap:
         self, 
         map_width_px: int,
         map_height_px: int,
-        search_radius: float, 
-        map: int=0
+        search_radius_px: float, 
+        map: int=0, 
+        scale_factor: float=0.0
     ):
         # TODO: make map private, getters / setters etc
         self.map = map
         self.map_width_px = map_width_px
         self.map_height_px = map_height_px
-        self.search_radius = search_radius
+        self.search_radius_px = search_radius_px
+        self.scale_factor = scale_factor
+
+        self.map_width_bits = self.map_width_px * self.scale_factor
+        self.map_height_bits = self.map_height_px * self.scale_factor
+        self.search_radius_bits = self.search_radius_px * self.scale_factor
 
     @cached_property
     def n_bits(self):
@@ -70,16 +76,16 @@ class SearchMap:
         """List of points within search radius of a given point."""
         points_in_search_radius = []
 
-        min_x = max(0, math.floor(centre.x - self.search_radius))
-        max_x = min(self.map_width_px, math.ceil(centre.x + self.search_radius))
+        min_x = max(0, math.floor(centre.x - self.search_radius_px))
+        max_x = min(self.map_width_px, math.ceil(centre.x + self.search_radius_px))
 
-        min_y = max(0, math.floor(centre.y - self.search_radius))
-        max_y = max(self.map_height_px, math.ceil(centre.y + self.search_radius))
+        min_y = max(0, math.floor(centre.y - self.search_radius_px))
+        max_y = min(self.map_height_px, math.ceil(centre.y + self.search_radius_px))
 
         for x_value in range(min_x, max_x): 
             for y_value in range(min_y, max_y):
                 point = Point(x_value, y_value)
-                if centre.distance_to(point) <= self.search_radius: 
+                if centre.distance_to(point) <= self.search_radius_px: 
                     points_in_search_radius.append(point)
 
         return points_in_search_radius
