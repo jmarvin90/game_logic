@@ -26,11 +26,9 @@ class SearchMap:
         """Iterate through the string map to print to console."""
         input = self.__as_str()
         output = ""
-        
-        for row in range(0, self.map_height_px): 
-            min = row * self.map_width_px
-            max = min + self.map_width_px
-            output += input[min:max] + "\n"
+
+        for row in range(0, self.n_bits, self.map_width_px):
+            output += input[row:row+self.map_width_px] + "\n"
 
         return output
 
