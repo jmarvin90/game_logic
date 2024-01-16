@@ -11,7 +11,7 @@ class SearchMap:
         map_height_px: int,
         search_radius_px: float, 
         map: int=0, 
-        scale_factor: float=0.0
+        scale_factor: float=1.0
     ):
         # TODO: make map private, getters / setters etc
         self.map = map
@@ -20,22 +20,24 @@ class SearchMap:
         self.search_radius_px = search_radius_px
         self.scale_factor = scale_factor
 
-        self.map_width_bits = self.map_width_px * self.scale_factor
-        self.map_height_bits = self.map_height_px * self.scale_factor
+        # Must be whole bits
+        self.map_width_bits = int(self.map_width_px * self.scale_factor)
+        self.map_height_bits = int(self.map_height_px * self.scale_factor)
+
         self.search_radius_bits = self.search_radius_px * self.scale_factor
 
     @cached_property
     def n_bits(self):
         """Return the total number of bits in the searchmap."""
-        return self.map_height_px * self.map_width_px
+        return self.map_height_bits * self.map_width_bits
 
     def __str__(self) -> str:
         """Return a line-adjusted string representation of the map."""
         input = self.__as_str()
         output = ""
 
-        for row in range(0, self.n_bits, self.map_width_px):
-            output += input[row:row+self.map_width_px] + "\n"
+        for row in range(0, self.n_bits, self.map_width_bits):
+            output += input[row:row+self.map_width_bits] + "\n"
 
         return output
 
@@ -53,7 +55,7 @@ class SearchMap:
         self.map |= self.grid_binary_value(point)
 
     def reveal_radius(self, point: Point) -> None:
-        """Reveal a radius around a point."""
+        """Reveal all points within the search radius around a given point."""
         for given_point in self.get_points_in_search_radius(
             centre=point
         ): 
@@ -61,14 +63,14 @@ class SearchMap:
 
     def invert_point(self, point: Point) -> Point:
         """Return a point with x, y inverted (top -> bottom, left -> right)."""
-        invert_x = (self.map_width_px - point.x) -1
-        invert_y = (self.map_height_px - point.y) -1
+        invert_x = (self.map_width_bits - point.x) -1
+        invert_y = (self.map_height_bits - point.y) -1
         return Point(invert_x, invert_y)
 
     def grid_index_pos(self, point: Point) -> int:
         """Return the searchmap bit index position for a given point."""
         inverted = self.invert_point(point)
-        return (self.map_width_px * inverted.y) + inverted.x
+        return (self.map_width_bits * inverted.y) + inverted.x
 
     def grid_binary_value(self, point: Point) -> int:
         """Return the binary value for a point's searchmap index position."""
@@ -81,16 +83,16 @@ class SearchMap:
         """List of points within search radius of a given point."""
         points_in_search_radius = []
 
-        min_x = max(0, math.floor(centre.x - self.search_radius_px))
-        max_x = min(self.map_width_px, math.ceil(centre.x + self.search_radius_px))
+        min_x = max(0, math.floor(centre.x - self.search_radius_bits))
+        max_x = min(self.map_width_bits, math.ceil(centre.x + self.search_radius_bits))
 
-        min_y = max(0, math.floor(centre.y - self.search_radius_px))
-        max_y = min(self.map_height_px, math.ceil(centre.y + self.search_radius_px))
+        min_y = max(0, math.floor(centre.y - self.search_radius_bits))
+        max_y = min(self.map_height_bits, math.ceil(centre.y + self.search_radius_bits))
 
         for x_value in range(min_x, max_x): 
             for y_value in range(min_y, max_y):
                 point = Point(x_value, y_value)
-                if centre.distance_to(point) <= self.search_radius_px: 
+                if centre.distance_to(point) <= self.search_radius_bits: 
                     points_in_search_radius.append(point)
 
         return points_in_search_radius
