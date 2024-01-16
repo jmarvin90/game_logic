@@ -39,7 +39,7 @@ class SearchMap:
         str_map_val = str(bin(self.map))[2:]
         return str_map_val.rjust(self.n_bits, "0")
 
-    def __max_search_val(self) -> int:
+    def __max_grid_val(self) -> int:
         return (1 << (self.n_bits)) -1
 
     def reveal(self, point: Point) -> None: 
