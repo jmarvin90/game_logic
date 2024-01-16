@@ -30,7 +30,7 @@ class SearchMap:
         return self.map_height_px * self.map_width_px
 
     def __str__(self) -> str:
-        """Iterate through the string map to print to console."""
+        """Return a line-adjusted string representation of the map."""
         input = self.__as_str()
         output = ""
 
