@@ -44,10 +44,7 @@ class SearchMap:
 
     def reveal(self, point: Point) -> None: 
         """Alter to map to reveal the 'tile' at the given Point position."""
-        self.map |= point.binary_grid_value(
-            width=self.map_width_px, 
-            height=self.map_height_px
-        )
+        self.map |= self.grid_binary_value(point)
 
     def reveal_radius(self, point: Point) -> None:
         """Reveal a radius around a point."""
@@ -56,6 +53,18 @@ class SearchMap:
         ): 
             self.reveal(given_point)
 
+    def invert_point(self, point: Point) -> Point:
+        invert_x = (self.map_width_px - point.x) -1
+        invert_y = (self.map_height_px - point.y) -1
+        return Point(invert_x, invert_y)
+
+    def grid_index_pos(self, point: Point) -> int:
+        inverted = self.invert_point(point)
+        return (self.map_width_px * inverted.y) + inverted.x
+
+    def grid_binary_value(self, point: Point) -> int:
+        return 2 ** self.grid_index_pos(point)
+
     def get_points_in_search_radius(
         self, 
         centre: Point
@@ -63,20 +72,14 @@ class SearchMap:
         """List of points within search radius of a given point."""
         points_in_search_radius = []
 
-        for x_value in range(
-            centre.min_search_x(search_radius=self.search_radius), 
-            centre.max_search_x(
-                search_radius=self.search_radius,
-                width=self.map_width_px
-            )
-        ): 
-            for y_value in range(
-                centre.min_search_y(search_radius=self.search_radius), 
-                centre.max_search_y(
-                    search_radius=self.search_radius, 
-                    height=self.map_height_px
-                )
-            ):
+        min_x = max(0, math.floor(centre.x - self.search_radius))
+        max_x = min(self.map_width_px, math.ceil(centre.x + self.search_radius))
+
+        min_y = max(0, math.floor(centre.y - self.search_radius))
+        max_y = max(self.map_height_px, math.ceil(centre.y + self.search_radius))
+
+        for x_value in range(min_x, max_x): 
+            for y_value in range(min_y, max_y):
                 point = Point(x_value, y_value)
                 if centre.distance_to(point) <= self.search_radius: 
                     points_in_search_radius.append(point)

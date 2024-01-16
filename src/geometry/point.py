@@ -30,44 +30,6 @@ class Point:
     
     def scaled(self, scale_factor: float):
         return Point(self.x * scale_factor, self.y * scale_factor)
-
-    @staticmethod
-    def _invert_coordinate(coordinate: int, span: int) -> int:
-        """Inverse a coordinate value as per a bottom-right-oriented grid."""
-        return (span - coordinate) -1
-
-    def invert_point(self, width: int, height: int) -> Point:
-        return Point(
-            self._invert_coordinate(self.x, width), 
-            self._invert_coordinate(self.y, height)
-        )
-
-    def binary_grid_index_pos(self, width: int, height: int) -> int:
-        inverted = self.invert_point(width, height)
-        return (width * inverted.y) + inverted.x
-
-    def binary_grid_value(self, width: int, height: int) -> int:
-        return 2**self.binary_grid_index_pos(width, height)
-
-    @staticmethod
-    def __min_search(coordinate: int, search_radius: float) -> int:
-        return max(0, math.floor(coordinate - search_radius))
-
-    @staticmethod
-    def __max_search(coordinate: int, search_radius: float, span: int) -> int:
-        return min(span, math.ceil(coordinate + search_radius))
-
-    def min_search_x(self, search_radius:float) -> int:
-        return Point.__min_search(self.x, search_radius)
-
-    def max_search_x(self, search_radius:float, width: int) -> int:
-        return Point.__max_search(self.x, search_radius, width)
-
-    def min_search_y(self, search_radius:float) -> int:
-        return Point.__min_search(self.y, search_radius)
-
-    def max_search_y(self, search_radius: float, height: int) -> int:
-        return Point.__max_search(self.y, search_radius, height)
         
     @property
     def x(self) -> int: 
