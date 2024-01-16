@@ -38,7 +38,7 @@ class SearchMap:
         return str_map_val.rjust(self.n_bits, "0")
 
     def __max_grid_val(self) -> int:
-        return (1 << (self.n_bits)) -1
+        return (2**self.n_bits) - 1
 
     def reveal(self, point: Point) -> None: 
         """Alter to map to reveal the 'tile' at the given Point position."""
