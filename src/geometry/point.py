@@ -3,8 +3,8 @@ import math
 
 class Point: 
     def __init__(self, x: int, y: int):
-        self._x = x
-        self._y = y
+        self._x = int(x)
+        self._y = int(y)
 
     def __str__(self):
         return f"{self.x}, {self.y}"
@@ -28,7 +28,10 @@ class Point:
         return (self.x * point.x) + (self.y * point.y)
     
     def scaled(self, scale_factor: float):
-        return Point(self.x * scale_factor, self.y * scale_factor)
+        return Point(
+            x = int(self.x * scale_factor), 
+            y = int(self.y * scale_factor)
+        )
         
     @property
     def x(self) -> int: 
