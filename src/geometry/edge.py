@@ -150,10 +150,11 @@ class Edge:
 
         for step in range(1, n_steps + 1): 
             t = step / n_steps
-            x = self._interpolate(self.origin.x, self.termination.x, t)
-            y = self._interpolate(self.origin.y, self.termination.y, t)
+            x = self.interpolate(self.origin.x, self.termination.x, t)
+            y = self.interpolate(self.origin.y, self.termination.y, t)
             points.insert(-1, Point(x, y))
 
+        # TODO: check that points will be returned in order origin->termination
         return points
 
     @staticmethod

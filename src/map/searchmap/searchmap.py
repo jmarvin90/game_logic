@@ -3,6 +3,7 @@ import math
 from functools import cached_property
 
 from geometry.point import Point
+from geometry.edge import Edge
 
 class SearchMap: 
     def __init__(
@@ -91,6 +92,8 @@ class SearchMap:
         """List of points within search radius of a given point."""
         points_in_search_radius = []
 
+        # TODO - remedy the need to use -1 due to an indexing error
+
         # Define a bounding box around the centre using the radius
         # The left and right of the box
         min_x = max(
@@ -98,7 +101,7 @@ class SearchMap:
         )
 
         max_x = min(
-            self.map_width_px, math.ceil(centre.x + self.search_radius_px)
+            self.map_width_px -1, math.ceil(centre.x + self.search_radius_px)
         )
 
         # The top and bottom of the box
@@ -107,14 +110,31 @@ class SearchMap:
         )
 
         max_y = min(
-            self.map_height_px, math.ceil(centre.y + self.search_radius_px)
+            self.map_height_px -1, math.ceil(centre.y + self.search_radius_px)
         )
 
-        # Find all of the points in the box which are within the radius
-        for x_value in range(min_x, max_x): 
-            for y_value in range(min_y, max_y):
-                point = Point(x_value, y_value)
-                if centre.distance_to(point) <= self.search_radius_px: 
+        # TODO: figure out how to generate the sides array programatically
+        sides = [
+            Edge(Point(min_x, min_y), Point(min_x, max_y)),         # Left
+            Edge(Point(min_x, max_y), Point(max_x, max_y)),         # Top
+            Edge(Point(max_x, max_y), Point(max_x, min_y)),         # Right
+            Edge(Point(max_x, min_y), Point(min_x, min_y)),         # Bottom
+        ]
+
+        for side in sides:
+            for side_point in side.intermediary_points():
+                ray = Edge(origin=centre, termination=side_point)
+                for point in ray.intermediary_points():
+                    # Stop traversing the ray if the ray gets blocked
+                    # TODO: implement the check
+                    # if point in blocked_points: 
+                    #     break
+
+                    # Stop traversing the ray if its length exceeds search 
+                    # radius
+                    if centre.distance_to(point) > self.search_radius_px:
+                        break
+
                     points_in_search_radius.append(point)
 
         return points_in_search_radius

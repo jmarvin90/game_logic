@@ -52,5 +52,4 @@ class Point:
         """Calculate the distance to another point."""
         x_delta = self.x - point.x
         y_delta = self.y - point.y
-        distance_to_point = math.hypot(x_delta, y_delta)
-        return distance_to_point
+        return math.hypot(x_delta, y_delta)
