@@ -54,10 +54,3 @@ class Point:
         y_delta = self.y - point.y
         distance_to_point = math.hypot(x_delta, y_delta)
         return distance_to_point
-    
-    # @property
-    # def is_in_bounds(self) -> bool: 
-    #     """Indicate whether the specified point is in bounds of the map."""
-    #     in_x = 0 <= self.x <= SEARCH_MAP_SIZE
-    #     in_y = 0 <= self.y <= SEARCH_MAP_SIZE
-    #     return in_x and in_y
