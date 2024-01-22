@@ -72,8 +72,8 @@ class SearchMap:
 
     def invert_point(self, point: Point) -> Point:
         """Return a point with x, y inverted (top -> bottom, left -> right)."""
-        invert_x = (self.map_width_bits - point.x) -1
-        invert_y = (self.map_height_bits - point.y) -1
+        invert_x = (self.map_width_bits -1) - point.x
+        invert_y = (self.map_height_bits -1) - point.y
         return Point(invert_x, invert_y)
 
     def bit_position(self, point: Point) -> int:
