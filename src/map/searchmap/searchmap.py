@@ -121,10 +121,16 @@ class SearchMap:
             Edge(Point(max_x, min_y), Point(min_x, min_y))          # Bottom
         ]
 
+        points_evaluated = []
+
         for side in sides:
             for side_point in side.intermediary_points():
                 ray = Edge(origin=centre, termination=side_point)
                 for point in ray.intermediary_points():
+                    if point not in points_evaluated:
+                        points_evaluated.append(point)
+                    else:
+                        pass
 
                     # Stop traversing the ray if the ray gets blocked
                     # TODO: implement the check
