@@ -85,6 +85,8 @@ class Edge:
         """Return the centre point of the edge."""
         mid_x = self.origin.x + (self.x_diff / 2)
         mid_y = self.origin.y + (self.y_diff / 2)
+        # TODO: Point constructor is going to round float values down - 
+        # that'll likely be a problem
         return Point(mid_x, mid_y)
 
     @staticmethod
@@ -137,8 +139,7 @@ class Edge:
         """Interpolate the next 'step' between a given start and end."""
         difference = end - start
         portion = difference * step
-        result = start + portion
-        return round(result)
+        return round(start + portion)
     
     def intermediary_points(self, n_steps: Optional[int]=None) -> List[Point]:
         """Return intermediary points between start and end."""
