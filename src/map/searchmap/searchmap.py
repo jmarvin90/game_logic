@@ -97,20 +97,20 @@ class SearchMap:
         # Define a bounding box around the centre using the radius
         # The left and right of the box
         min_x = max(
-            0, math.floor(centre.x - self.search_radius_px)
+            0, math.floor(centre.x - self.search_radius_bits)
         )
 
         max_x = min(
-            self.map_width_px -1, math.ceil(centre.x + self.search_radius_px)
+            self.map_width_px -1, math.ceil(centre.x + self.search_radius_bits)
         )
 
         # The top and bottom of the box
         min_y = max(
-            0, math.floor(centre.y - self.search_radius_px)
+            0, math.floor(centre.y - self.search_radius_bits)
         )
 
         max_y = min(
-            self.map_height_px -1, math.ceil(centre.y + self.search_radius_px)
+            self.map_height_px -1, math.ceil(centre.y + self.search_radius_bits)
         )
 
         # TODO: figure out how to generate the sides array programatically
@@ -139,7 +139,7 @@ class SearchMap:
 
                     # Stop traversing the ray if its length exceeds search 
                     # radius
-                    if centre.distance_to(point) > self.search_radius_px:
+                    if centre.distance_to(point) > self.search_radius_bits:
                         break
 
                     points_in_search_radius.append(point)
