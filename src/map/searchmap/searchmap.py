@@ -118,13 +118,14 @@ class SearchMap:
             Edge(Point(min_x, min_y), Point(min_x, max_y)),         # Left
             Edge(Point(min_x, max_y), Point(max_x, max_y)),         # Top
             Edge(Point(max_x, max_y), Point(max_x, min_y)),         # Right
-            Edge(Point(max_x, min_y), Point(min_x, min_y)),         # Bottom
+            Edge(Point(max_x, min_y), Point(min_x, min_y))          # Bottom
         ]
 
         for side in sides:
             for side_point in side.intermediary_points():
                 ray = Edge(origin=centre, termination=side_point)
                 for point in ray.intermediary_points():
+
                     # Stop traversing the ray if the ray gets blocked
                     # TODO: implement the check
                     # if point in blocked_points: 
