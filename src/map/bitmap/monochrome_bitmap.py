@@ -1,5 +1,5 @@
-from map.bitmap.bitmap import BitMap
-from map.bitmap.colour_table import ColourTableEntry
+from src.map.bitmap.bitmap import BitMap
+from src.map.bitmap.colour_table import ColourTableEntry
 
 class MonochromeBitMap(BitMap):
 

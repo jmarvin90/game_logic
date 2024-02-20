@@ -1,7 +1,7 @@
 from typing import Tuple
 
-from geometry.point import Point
-from geometry.edge import Edge
+from src.geometry.point import Point
+from src.geometry.edge import Edge
 
 class Polygon:
     def __init__(self, *points):

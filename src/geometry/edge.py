@@ -2,7 +2,7 @@ from __future__ import annotations
 from typing import Optional, List, Tuple
 import math
 
-from geometry.point import Point
+from src.geometry.point import Point
 
 
 class Edge: 

@@ -1,6 +1,6 @@
 import pytest
 
-from geometry.point import Point
+from src.geometry.point import Point
 
 @pytest.fixture
 def a():

@@ -1,18 +1,18 @@
 import pytest
 
-from map.bitmap.bitmap import BitMap
-from map.bitmap.monochrome_bitmap import MonochromeBitMap
+from src.map.bitmap.bitmap import BitMap
+from src.map.bitmap.monochrome_bitmap import MonochromeBitMap
 
 @pytest.fixture
 def monochrome_bitmap():
     return MonochromeBitMap(
-        image_file_path='src/tests/map/bitmap/test_files/1bpp-321x240.bmp'
+        image_file_path='tests/bitmap/test_files/1bpp-321x240.bmp'
     )
 
 @pytest.fixture
 def colour_bitmap():
     return BitMap(
-        image_file_path='src/tests/map/bitmap/test_files/bmp_24.bmp'
+        image_file_path='tests/bitmap/test_files/bmp_24.bmp'
     )
 
 def test_bmp_header(monochrome_bitmap):

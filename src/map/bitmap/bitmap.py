@@ -1,7 +1,7 @@
 from __future__ import annotations
 from functools import cached_property
 
-from map.bitmap.colour_table import ColourTableEntry
+from src.map.bitmap.colour_table import ColourTableEntry
 
 class BitMap:
     """Type enabling the reading of basic (e.g. 1-bpp) bitmap images."""

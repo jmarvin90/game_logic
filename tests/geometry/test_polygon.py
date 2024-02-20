@@ -1,7 +1,7 @@
 import pytest
 
-from geometry.polygon import Polygon
-from geometry.point import Point
+from src.geometry.polygon import Polygon
+from src.geometry.point import Point
 
 @pytest.fixture
 def point_set_with_redundant_points():

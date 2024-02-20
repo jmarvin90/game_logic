@@ -1,7 +1,7 @@
 import pytest
 
-from geometry.point import Point
-from geometry.edge import Edge
+from src.geometry.point import Point
+from src.geometry.edge import Edge
 
 @pytest.fixture
 def short_diagonal_edge():

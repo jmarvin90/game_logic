@@ -1,8 +1,8 @@
 import pytest
 
-from map.searchmap.searchmap import SearchMap
-from geometry.point import Point
-from geometry.edge import Edge
+from src.map.searchmap.searchmap import SearchMap
+from src.geometry.point import Point
+from src.geometry.edge import Edge
 
 @pytest.fixture
 def test_search_map() -> SearchMap:

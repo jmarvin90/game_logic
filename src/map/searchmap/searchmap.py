@@ -2,8 +2,8 @@ from typing import List
 import math
 from functools import cached_property
 
-from geometry.point import Point
-from geometry.edge import Edge
+from src.geometry.point import Point
+from src.geometry.edge import Edge
 
 class SearchMap: 
     def __init__(
