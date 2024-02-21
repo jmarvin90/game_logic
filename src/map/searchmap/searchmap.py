@@ -42,12 +42,12 @@ class SearchMap:
     def __str__(self) -> str:
         """Return a line-adjusted string representation of the map."""
         input = self.__as_str()
-        output = ""
-
-        for row in range(0, self.n_bits, self.map_width_bits):
-            output += input[row:row+self.map_width_bits] + "\n"
-
-        return output
+        output = [
+            input[row:row+self.map_width_bits] 
+            for row in range(0, self.n_bits, self.map_width_bits)
+        ]
+        
+        return "\n".join(output)
 
     def __as_str(self) -> str: 
         """Return a string representation of the map."""
