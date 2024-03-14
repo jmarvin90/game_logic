@@ -47,9 +47,7 @@ class Edge:
     @property
     def diagonal_distance(self) -> int: 
         """"""
-        x_delta = self.origin.x - self.termination.x
-        y_delta = self.origin.y - self.termination.y
-        return max(abs(x_delta), abs(y_delta))
+        return max(abs(self.x_diff), abs(self.y_diff))
     
     @property
     def length(self) -> float: 
