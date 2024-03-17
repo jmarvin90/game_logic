@@ -4,6 +4,8 @@ from functools import cached_property
 from src.map.bitmap.colour_table import ColourTableEntry
 
 class BitMap:
+    dib_header_start = 14
+
     """Type enabling the reading of basic (e.g. 1-bpp) bitmap images."""
     def __init__(self, image_file_path: str):
         self.image_file_path = image_file_path
@@ -11,13 +13,10 @@ class BitMap:
         with open(image_file_path, 'rb') as bmp:
             self.raw = bmp.read()
 
-        # DIB header start position is fixed at 14
-        self.dib_header_start = 14
-
     @cached_property
-    def bmp_header(self) -> bytes:
+    def bmp_header(self) -> bytes:   
         """Return the bitmap header (exactly 14 bytes)."""
-        return self.raw[:self.dib_header_start]
+        return self.raw[:BitMap.dib_header_start]
 
     @cached_property
     def image_data_offset(self) -> int:
@@ -42,13 +41,13 @@ class BitMap:
     @cached_property
     def dib_header_end(self) -> int:
         """Return the header end calculated by start byte + size in bytes."""
-        return self.dib_header_start + self.dib_header_size_bytes
+        return BitMap.dib_header_start + self.dib_header_size_bytes
 
     @cached_property
     def dib_header(self) -> bytes:
         """Return the DIB header (starting at byte 14; variable length."""
         # DIB header starts at byte 14; length is in dib_header_size_bytes."""
-        return self.raw[self.dib_header_start:self.dib_header_end]
+        return self.raw[BitMap.dib_header_start:self.dib_header_end]
 
     @cached_property
     def colour_table(self):
