@@ -44,7 +44,7 @@ class BitMap:
 
     @cached_property
     def dib_header(self) -> bytes:
-        """Return the DIB header (starting at byte 14; variable length."""
+        """Return the DIB header (starting at byte 14; variable length)."""
         # DIB header starts at byte 14; length is in dib_header_size_bytes."""
         return self.raw[self.dib_header_start:self.dib_header_end]
 
