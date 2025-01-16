@@ -14,7 +14,7 @@ class Edge:
         self.origin = origin
         self.termination = termination
 
-    def __eq__(self, edge_2: Edge):
+    def __eq__(self, edge_2: Edge) -> bool:
         """Check if two edges are the same."""
         # TODO: this won't work if Edge.__contains__ is updated for point on line
         return self.origin in edge_2 and self.termination in edge_2
@@ -28,7 +28,7 @@ class Edge:
             # e.g. Point is in self.intermediary_points
         )
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f"{self.origin} -> {self.termination}"
 
     @property
